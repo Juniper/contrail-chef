@@ -81,16 +81,22 @@ bash "vhost0-up" do
     EOC
 end
 
-#template "/etc/contrail/contrail-vrouter-agent.conf" do
-#    source "contrail-vrouter-agent.conf.erb"
-#    owner "contrail"
-#    group "contrail"
-#    mode 00644
-#    notifies :restart, "service[contrail-vrouter-agent]", :immediately
-#end
-#
-#%w{ contrail-vrouter-agent }.each do |pkg|
-#    service pkg do
-#        action [:enable, :start]
-#    end
-#end
+template "/etc/contrail/contrail-vrouter-agent.conf" do
+    source "contrail-vrouter-agent.conf.erb"
+    owner "contrail"
+    group "contrail"
+    mode 00644
+    notifies :restart, "service[contrail-vrouter-agent]", :immediately
+end
+
+%w{ contrail-vrouter-agent }.each do |pkg|
+    service pkg do
+        action [:enable, :start]
+    end
+end
+
+%w{ supervisor-vrouter }.each do |pkg|
+    service pkg do
+        action [:enable, :start]
+    end
+end

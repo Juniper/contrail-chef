@@ -98,7 +98,7 @@ max_control_nodes=2
 
 [METADATA]
 # Shared secret for metadata proxy service (Optional)
-metadata_proxy_secret=<%=get_config('contrail-metadata-secret')%>
+#metadata_proxy_secret=contrail
 
 [NETWORKS]
 # control-channel IP address used by WEB-UI to connect to vnswad to fetch
@@ -112,13 +112,13 @@ metadata_proxy_secret=<%=get_config('contrail-metadata-secret')%>
 name=vhost0
 
 # IP address and prefix in ip/prefix_len format
-ip=<%="#{node['contrail']['floating']['ip']}/#{(node['contrail']['floating']['cidr'].match /\d+\.\d+\.\d+\.\d+\/(\d+)/)[1]}"%>
+ip=<%="#{node['contrail']['compute']['ip']}/#{(node['contrail']['compute']['cidr'].match /\d+\.\d+\.\d+\.\d+\/(\d+)/)[1]}"%>
 
 # Gateway IP address for virtual host
-gateway=<%=node['contrail']['floating']['gateway']%>
+gateway=<%=node['contrail']['compute']['gateway']%>
 
 # Physical interface name to which virtual host interface maps to
-physical_interface=<%=node['contrail']['floating']['interface']%>
+physical_interface=<%=node['contrail']['compute']['interface']%>
 
 # We can have multiple gateway sections with different indices in the
 # following format
