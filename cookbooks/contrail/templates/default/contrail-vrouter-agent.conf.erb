@@ -57,7 +57,7 @@ tunnel_type=MPLSoUDP
 #mandatory. Else this section is optional
 
 # IP address of discovery server
-server=<%=node['contrail']['management']['vip']%>
+server=<%=node['contrail']['cfgm']['ip']%>
 
 # Number of control-nodes info to be provided by Discovery service. Possible
 # values are 1 and 2

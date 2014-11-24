@@ -11,10 +11,15 @@ default['contrail']['router_asn'] = 64512
 default['contrail']['service_token'] = "contrail123"
 default['contrail']['admin_token'] = "contrail123"
 default['contrail']['haproxy'] = false
-default['contrail']['management']['vip'] = "10.84.13.36"
+default['contrail']['cfgm']['ip'] = "10.84.13.36"
+default['contrail']['region_name'] = node.chef_environment
 # Keystone
 default['contrail']['keystone_ip'] = "10.84.13.36"
 default['contrail']['protocol']['keystone'] = "http"
+#Database
+default['contrail']['database']['ip'] = "10.84.13.36"
+# Control
+default['contrail']['control']['ip'] = "10.84.13.36"
 # Compute
 default['contrail']['compute']['interface'] = "eth1"
 default['contrail']['compute']['ip'] = "10.84.13.36"
