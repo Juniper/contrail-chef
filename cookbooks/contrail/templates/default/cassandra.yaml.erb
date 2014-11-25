@@ -13,7 +13,7 @@
 
 # The name of the cluster. This is mainly used to prevent machines in
 # one logical cluster from joining another.
-cluster_name: '<%=node['contrail']['region_name']%>'
+cluster_name: 'Contrail'
 
 # This defines the number of tokens randomly assigned to this node on the ring
 # The more tokens, relative to other nodes, the larger the proportion of data
@@ -58,10 +58,6 @@ hinted_handoff_throttle_in_kb: 1024
 # Consider increasing this number when you have multi-dc deployments, since
 # cross-dc handoff tends to be slower
 max_hints_delivery_threads: 2
-
-# Maximum throttle in KBs per second, total. This will be
-# reduced proportionally to the number of nodes in the cluster.
-batchlog_replay_throttle_in_kb: 1024
 
 # Authentication backend, implementing IAuthenticator; used to identify users
 # Out of the box, Cassandra provides org.apache.cassandra.auth.{AllowAllAuthenticator,

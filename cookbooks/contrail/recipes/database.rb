@@ -23,7 +23,7 @@ bash "remove-initial-cassandra-data-dir" do
 end
 
 %w{cassandra-env.sh cassandra-rackdc.properties cassandra.yaml}.each do |file|
-    template "/etc/cassandra/#{file}" do
+    template "/etc/cassandra/conf/#{file}" do
         source "#{file}.erb"
         mode 00644
         variables(:servers => get_database_nodes)
