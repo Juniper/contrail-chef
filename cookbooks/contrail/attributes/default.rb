@@ -20,6 +20,8 @@ default['contrail']['protocol']['keystone'] = "http"
 default['contrail']['database']['ip'] = "10.84.13.36"
 # Control
 default['contrail']['control']['ip'] = "10.84.13.36"
+# Analytics
+default['contrail']['analytics']['ip'] = "10.84.13.36"
 # Compute
 default['contrail']['compute']['interface'] = "eth1"
 default['contrail']['compute']['ip'] = "10.84.13.36"
