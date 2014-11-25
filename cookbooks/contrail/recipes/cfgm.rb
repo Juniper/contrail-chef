@@ -6,6 +6,8 @@
 #
 
 %w{ ifmap-server
+    contrail-config
+    contrail-utils
 }.each do |pkg|
     package pkg do
         action :upgrade
@@ -30,16 +32,24 @@ template "/etc/ifmap-server/basicauthusers.properties" do
     notifies :restart, "service[ifmap]", :immediately
 end
 
-%w{ discovery
-    svc-monitor
+template "/etc/contrail/vnc_api_lib.ini" do
+    source "contrail-vnc_api_lib.ini.erb"
+    owner "contrail"
+    group "contrail"
+    mode 00644
+end
+
+%w{ contrail-discovery
+    contrail-svc-monitor
+    contrail-api
 }.each do |pkg|
-    template "/etc/contrail/contrail-#{pkg}.conf" do
-        source "contrail-#{pkg}.conf.erb"
+    template "/etc/contrail/#{pkg}.conf" do
+        source "#{pkg}.conf.erb"
         owner "contrail"
         group "contrail"
         mode 00640
-        variables(:servers => get_cfgm_nodes)
-        notifies :restart, "service[contrail-#{pkg}]", :immediately
+        variables(:servers => get_database_nodes)
+        notifies :restart, "service[#{pkg}]", :immediately
     end
 end
 
@@ -47,6 +57,7 @@ end
     ifmap
     contrail-discovery
     contrail-svc-monitor
+    contrail-api
 }.each do |pkg|
     service pkg do
         action [:enable, :start]

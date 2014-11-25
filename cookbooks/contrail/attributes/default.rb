@@ -14,7 +14,7 @@ default['contrail']['haproxy'] = false
 default['contrail']['cfgm']['ip'] = "10.84.13.36"
 default['contrail']['region_name'] = node.chef_environment
 # Keystone
-default['contrail']['keystone_ip'] = "10.84.13.36"
+default['contrail']['keystone']['ip'] = "10.84.13.36"
 default['contrail']['protocol']['keystone'] = "http"
 #Database
 default['contrail']['database']['ip'] = "10.84.13.36"
