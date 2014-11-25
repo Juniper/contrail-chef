@@ -29,3 +29,14 @@ use_certs=False
 keyfile=/etc/contrail/ssl/private_keys/apiserver_key.pem
 certfile=/etc/contrail/ssl/certs/apiserver.pem
 ca_certs=/etc/contrail/ssl/certs/ca.pem
+
+[KEYSTONE]
+auth_host=<%=node['contrail']['keystone']['ip']%>
+auth_protocol=<%=node['contrail']['protocol']['keystone']%>
+auth_port=35357
+admin_user=<%=node['contrail']['admin_user']%>
+admin_password=<%=node['contrail']['admin_token']%>
+admin_token=<%=node['contrail']['admin_token']%>
+admin_tenant_name=<%=node['contrail']['admin_tenant_name']%>
+insecure=False
+memcache_servers=127.0.0.1:11211

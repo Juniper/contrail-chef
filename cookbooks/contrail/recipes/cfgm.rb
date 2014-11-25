@@ -42,6 +42,7 @@ end
 %w{ contrail-discovery
     contrail-svc-monitor
     contrail-api
+    contrail-schema
 }.each do |pkg|
     template "/etc/contrail/#{pkg}.conf" do
         source "#{pkg}.conf.erb"
@@ -58,6 +59,7 @@ end
     contrail-discovery
     contrail-svc-monitor
     contrail-api
+    contrail-schema
 }.each do |pkg|
     service pkg do
         action [:enable, :start]
