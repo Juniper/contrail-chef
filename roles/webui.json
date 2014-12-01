@@ -1,0 +1,16 @@
+{
+  "name": "webui",
+  "description": "A functional webui node in a opencontrail cluster",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[contrail]",
+    "recipe[contrail::webui]"
+  ],
+  "env_run_lists": {
+  }
+}

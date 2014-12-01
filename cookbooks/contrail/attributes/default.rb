@@ -16,6 +16,8 @@ default['contrail']['admin_tenant_name'] = "admin"
 default['contrail']['haproxy'] = false
 default['contrail']['cfgm']['ip'] = "10.84.13.36"
 default['contrail']['region_name'] = node.chef_environment
+# Openstack
+default['contrail']['openstack']['ip'] = "10.84.13.36"
 # Keystone
 default['contrail']['keystone']['ip'] = "10.84.13.36"
 default['contrail']['protocol']['keystone'] = "http"
