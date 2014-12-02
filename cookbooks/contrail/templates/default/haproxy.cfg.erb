@@ -32,6 +32,9 @@ listen contrail-config-stats :5937
 frontend  contrail-api *:8082
     default_backend    contrail-api-backend
 
+frontend  contrail-discovery *:5998
+    default_backend    contrail-discovery-backend
+
 backend contrail-api-backend
     option nolinger
     balance     roundrobin
@@ -44,5 +47,19 @@ backend contrail-api-backend
 <% end -%>
     #server  10.84.14.2 10.84.14.2:9100 check
     #server  10.84.14.2 10.84.14.2:9101 check
+
+backend contrail-discovery-backend
+    option nolinger
+    balance     roundrobin
+<% 
+  idx = 9109
+  @servers.each do |server|
+    idx = idx + 1
+-%>
+    <%= "server #{server['contrail']['cfgm']['ip']} #{server['contrail']['cfgm']['ip']}:#{idx} check inter 2000 rise 2 fall 3" %>
+<% end -%>
+
+    #server  10.84.14.2 10.84.14.2:9110 check
+    #server  10.84.14.2 10.84.14.2:9111 check
 
 #contrail-config-marker-end

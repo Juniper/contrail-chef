@@ -8,6 +8,7 @@
 %w{ ifmap-server
     contrail-config
     contrail-utils
+    rabbitmq-server
 }.each do |pkg|
     package pkg do
         action :upgrade
@@ -17,6 +18,17 @@ end
 package "contrail-openstack-config" do
     action :upgrade
     notifies :stop, "service[supervisor-config]", :immediately
+end
+
+template "/etc/rabbitmq/rabbitmq-env.conf" do
+    source "rabbitmq-env.conf.erb"
+    mode 0644
+end
+
+template "/etc/rabbitmq/rabbitmq.config" do
+    source "rabbitmq.config.erb"
+    mode 00644
+    notifies :restart, "service[supervisor-support-service]", :delayed
 end
 
 template "/etc/ifmap-server/ifmap.properties" do
@@ -54,7 +66,9 @@ end
     end
 end
 
-%w{ supervisor-config
+%w{ rabbitmq-server
+    supervisor-support-service
+    supervisor-config
     ifmap
     contrail-discovery
     contrail-svc-monitor
