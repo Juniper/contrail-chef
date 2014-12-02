@@ -7,7 +7,7 @@
 
 package "contrail-openstack-database" do
     action :upgrade
-    notifies :stop, "service[cassandra]", :immediately
+    notifies :stop, "service[supervisor-database]", :immediately
     notifies :run, "bash[remove-initial-cassandra-data-dir]", :immediately
 end
 
@@ -27,16 +27,11 @@ end
         source "#{file}.erb"
         mode 00644
         variables(:servers => get_database_nodes)
-        notifies :restart, "service[cassandra]", :delayed
+        notifies :restart, "service[contrail-database]", :delayed
     end
 end
 
-service "cassandra" do
-    action [:enable, :start]
-    restart_command "service cassandra stop && service cassandra start && sleep 5"
-end
-
-%w{ supervisor-database }.each do |pkg|
+%w{ supervisor-database contrail-database }.each do |pkg|
     service pkg do
         action [:enable, :start]
     end
