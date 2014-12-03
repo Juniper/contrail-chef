@@ -5,6 +5,11 @@
 # Copyright 2014, Juniper Networks
 #
 
+package "contrail-openstack-config" do
+    action :upgrade
+    notifies :stop, "service[supervisor-config]", :immediately
+end
+
 %w{ ifmap-server
     contrail-config
     contrail-utils
@@ -15,9 +20,20 @@
     end
 end
 
-package "contrail-openstack-config" do
-    action :upgrade
-    notifies :stop, "service[supervisor-config]", :immediately
+if not platform?("ubuntu") then
+    %w{ contrail-api
+        contrail-database
+        contrail-device-manager
+        contrail-discovery
+        contrail-schema
+        contrail-svc-monitor
+    }.each do |svc|
+        file "/etc/init.d/#{svc}" do
+            owner 'root'
+            group 'root'
+            mode '0755'
+        end
+    end
 end
 
 template "/etc/rabbitmq/rabbitmq-env.conf" do
@@ -119,6 +135,19 @@ bash "provision_control" do
             --router_asn #{asn} \
             --host_name #{hostname} \
             --host_ip #{ctrl_ip} \
+            --oper add
+    EOH
+end
+
+bash "provision_encap_type" do
+    user "root"
+    admin_user=node['contrail']['admin_user']
+    admin_password=node['contrail']['admin_password']
+    code <<-EOH
+        python /opt/contrail/utils/provision_encap.py \
+            --admin_user #{admin_user} \
+            --admin_password #{admin_password} \
+            --encap_priority MPLSoUDP,MPLSoGRE,VXLAN \
             --oper add
     EOH
 end
