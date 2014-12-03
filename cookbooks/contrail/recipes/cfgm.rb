@@ -79,3 +79,46 @@ end
         action [:enable, :start]
     end
 end
+
+bash "provision_metadata_services" do
+    user "root"
+    admin_user=node['contrail']['admin_user']
+    admin_password=node['contrail']['admin_password']
+    admin_tenant_name=node['contrail']['admin_tenant_name']
+    cfgm_ip=node['contrail']['cfgm']['ip']
+    code <<-EOH
+        python /opt/contrail/utils/provision_linklocal.py \
+            --admin_user #{admin_user} \
+            --admin_password #{admin_password} \
+            --ipfabric_service_ip #{cfgm_ip} \
+            --ipfabric_service_port 8775 \
+            --api_server_ip #{cfgm_ip} \
+            --linklocal_service_name metadata \
+            --linklocal_service_ip 169.254.169.254 \
+            --linklocal_service_port 80 \
+            --oper add
+    EOH
+end
+
+bash "provision_control" do
+    user "root"
+    admin_user=node['contrail']['admin_user']
+    admin_password=node['contrail']['admin_password']
+    admin_tenant_name=node['contrail']['admin_tenant_name']
+    cfgm_ip=node['contrail']['cfgm']['ip']
+    ctrl_ip=node['contrail']['control']['ip']
+    asn=node['contrail']['router_asn']
+    hostname=node['contrail']['control']['hostname']
+    code <<-EOH
+        python /opt/contrail/utils/provision_control.py \
+            --admin_user #{admin_user} \
+            --admin_password #{admin_password} \
+            --admin_tenant_name #{admin_tenant_name} \
+            --api_server_ip #{cfgm_ip} \
+            --api_server_port 8082 \
+            --router_asn #{asn} \
+            --host_name #{hostname} \
+            --host_ip #{ctrl_ip} \
+            --oper add
+    EOH
+end
