@@ -31,6 +31,7 @@ default['contrail']['control']['hostname'] = "a6s35"
 default['contrail']['analytics']['ip'] = "10.84.13.35"
 # Compute
 default['contrail']['compute']['interface'] = "eth1"
+default['contrail']['compute']['hostname'] = "a6s35"
 default['contrail']['compute']['ip'] = "10.84.13.35"
 default['contrail']['compute']['netmask'] = "255.255.255.0"
 default['contrail']['compute']['gateway'] = "10.84.13.254"

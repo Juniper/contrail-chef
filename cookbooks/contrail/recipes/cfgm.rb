@@ -151,3 +151,25 @@ bash "provision_encap_type" do
             --oper add
     EOH
 end
+
+bash "provision_vrouter" do
+    user "root"
+    admin_user=node['contrail']['admin_user']
+    admin_password=node['contrail']['admin_password']
+    admin_tenant_name=node['contrail']['admin_tenant_name']
+    hostname=node['contrail']['compute']['hostname']
+    hostip=node['contrail']['compute']['ip']
+    cfgm_ip=node['contrail']['cfgm']['ip']
+    openstack_ip=node['contrail']['openstack']['ip']
+    code <<-EOH
+        python /opt/contrail/utils/provision_vrouter.py \
+            --admin_user #{admin_user} \
+            --admin_password #{admin_password} \
+            --admin_tenant_name #{admin_tenant_name} \
+            --host_name #{hostname} \
+            --host_ip #{hostip} \
+            --api_server_ip #{cfgm_ip} \
+            --openstack_ip #{openstack_ip} \
+            --oper add
+    EOH
+end
