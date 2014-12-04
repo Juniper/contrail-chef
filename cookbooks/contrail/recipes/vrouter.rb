@@ -29,22 +29,6 @@ pkgs.each do |pkg|
     end
 end
 
-bash "enable-vrouter" do
-    user "root"
-    vrouter_mod="/lib/modules/#{`uname -r`.chomp}/extra/net/vrouter/vrouter.ko"
-    interface=node['contrail']['compute']['interface']
-    macaddr=`cat /sys/class/net/#{interface}/address`.chomp
-    code <<-EOC
-        insmod #{vrouter_mod}
-        sed --in-place '/^vrouter$/d' /etc/modules
-        echo 'vrouter' >> /etc/modules
-        vif --create vhost0 --mac #{macaddr}
-        vif --add #{interface} --mac #{macaddr} --vrf 0 --vhost-phys --type physical
-        vif --add vhost0 --mac #{macaddr} --vrf 0 --xconnect #{interface} --type vhost
-    EOC
-    not_if "grep -e '^vrouter$' /etc/modules"
-end
-
 service 'network'
 
 template "/etc/sysconfig/network-scripts/ifcfg-vhost0" do
@@ -62,7 +46,6 @@ template "/etc/sysconfig/network-scripts/ifcfg-vhost0" do
         :dns3 => node['contrail']['compute']['dns3'],
         :domain => node['contrail']['compute']['domain']
     )
-#    notifies :restart, "service[network]", :delayed
 end
 
 template "/etc/sysconfig/network-scripts/ifcfg-#{node['contrail']['compute']['interface']}" do
@@ -70,15 +53,23 @@ template "/etc/sysconfig/network-scripts/ifcfg-#{node['contrail']['compute']['in
     variables(
         :interface => node['contrail']['compute']['interface'],
     )
-#    notifies :restart, "service[network]", :delayed
 end
 
-bash "vhost0-up" do
+bash "enable-vrouter" do
     user "root"
+    vrouter_mod="/lib/modules/#{`uname -r`.chomp}/extra/net/vrouter/vrouter.ko"
+    interface=node['contrail']['compute']['interface']
+    macaddr=`cat /sys/class/net/#{interface}/address`.chomp
     code <<-EOC
-        route add default gw #{node['contrail']['compute']['gateway']} dev vhost0
+        insmod #{vrouter_mod}
+        sed --in-place '/^vrouter$/d' /etc/modules
+        echo 'vrouter' >> /etc/modules
+        vif --create vhost0 --mac #{macaddr}
+        vif --add #{interface} --mac #{macaddr} --vrf 0 --vhost-phys --type physical
+        vif --add vhost0 --mac #{macaddr} --vrf 0 --xconnect #{interface} --type vhost
         service network restart
     EOC
+    not_if "grep -e '^vrouter$' /etc/modules"
 end
 
 template "/etc/contrail/contrail-vrouter-agent.conf" do
