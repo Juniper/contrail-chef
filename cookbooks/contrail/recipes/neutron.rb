@@ -26,7 +26,7 @@ end
 bash "neutron-server-setup" do
     user  "root"
     code <<-EOC
-        echo "SERVICE_TOKEN=#{node['contrail']['service_token']}" >> /etc/contrail/ctrl-details
+        echo "SERVICE_TOKEN=#{node['contrail']['service_token']}" > /etc/contrail/ctrl-details
         echo "SERVICE_TENANT=service" >> /etc/contrail/ctrl-details
         echo "AUTH_PROTOCOL=#{node['contrail']['protocol']['keystone']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM_PROTOCOL=http" >> /etc/contrail/ctrl-details
