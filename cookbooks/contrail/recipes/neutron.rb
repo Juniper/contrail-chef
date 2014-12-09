@@ -47,6 +47,7 @@ if node['contrail']['manage_neutron'] then
     bash "neutron-endpoint-setup" do
         user  "root"
         ks_server_ip=node['contrail']['keystone']['ip']
+        region=node['contrail']['region_name']
         quant_server_ip=node['contrail']['cfgm']['ip']
         admin_user=node['contrail']['admin_user']
         admin_password=node['contrail']['admin_password']
@@ -54,7 +55,7 @@ if node['contrail']['manage_neutron'] then
         service_token=node['contrail']['service_token']
         openstack_root_pw=node['contrail']['openstack_root_pw']
         code <<-EOC
-            /usr/bin/setup-quantum-in-keystone --ks_server_ip #{ks_server_ip} --quant_server_ip #{quant_server_ip} --tenant #{admin_tenant_name} --user #{admin_user} --password #{admin_password} --svc_password #{service_token} --root_password #{openstack_root_pw}
+            /usr/bin/setup-quantum-in-keystone --ks_server_ip #{ks_server_ip} --quant_server_ip #{quant_server_ip} --tenant #{admin_tenant_name} --user #{admin_user} --password #{admin_password} --svc_password #{service_token} --root_password #{openstack_root_pw} --region_name #{region}
         EOC
     end
 end

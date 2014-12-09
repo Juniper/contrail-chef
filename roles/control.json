@@ -10,7 +10,6 @@
   "run_list": [
     "recipe[contrail]",
     "recipe[contrail::control]"
-    "recipe[contrail::dns]"
   ],
   "env_run_lists": {
   }

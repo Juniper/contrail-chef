@@ -10,7 +10,7 @@
   "chef_type": "role",
   "run_list": [
     "recipe[contrail]",
-    "recipe[contrail::redis]"
+    "recipe[contrail::redis]",
     "recipe[contrail::analytics]"
   ],
   "env_run_lists": {
