@@ -5,7 +5,11 @@
 # Copyright 2014, Juniper Networks
 #
 
-%w{openstack-neutron neutron-plugin-contrail}.each do |pkg|
+%w{ openstack-neutron
+    neutron-plugin-contrail
+    python-simplejson
+    python-lxml
+}.each do |pkg|
     package pkg do
         action :upgrade
     end
