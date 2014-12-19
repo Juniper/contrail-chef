@@ -29,6 +29,28 @@ pkgs.each do |pkg|
     end
 end
 
+template "/etc/contrail/vrouter_nodemgr_param" do
+    source "vrouter_nodemgr_param.erb"
+    mode 00644
+end
+
+template "/etc/contrail/default_pmac" do
+    source "default_pmac.erb"
+    mode 00644
+    variables(
+        :macaddr => `cat /sys/class/net/#{node['contrail']['compute']['interface']}/address`.chomp
+    )
+end
+
+template "/etc/contrail/agent_param" do
+    source "agent_param.erb"
+    mode 00644
+    variables(
+        :kversion => `uname -r`.chomp,
+        :interface => node['contrail']['compute']['interface'],
+    )
+end
+
 service 'network'
 
 template "/etc/sysconfig/network-scripts/ifcfg-vhost0" do
