@@ -50,14 +50,15 @@ end
 template "/etc/ifmap-server/ifmap.properties" do
     source "ifmap.properties.erb"
     mode 00644
-    notifies :restart, "service[ifmap]", :delayed
+    notifies :restart, "service[ifmap]", :immediately
+    notifies :restart, "service[contrail-api]", :immediately
 end
 
 template "/etc/ifmap-server/basicauthusers.properties" do
     source "ifmap-basicauthusers.properties.erb"
     mode 00644
     variables(:servers => get_cfgm_nodes)
-    notifies :restart, "service[ifmap]", :immediately
+    #notifies :restart, "service[ifmap]", :immediately
 end
 
 template "/etc/contrail/vnc_api_lib.ini" do
