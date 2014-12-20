@@ -16,7 +16,7 @@ log_file=/var/log/contrail/contrail-svc-monitor.log
 cassandra_server_list = <%= @servers.collect{|x| x['contrail']['database']['ip']+':9160'}.join(' ') %>
 disc_server_ip = <%=node['contrail']['cfgm']['ip']%>
 disc_server_port=5998
-region_name=RegionOne
+region_name=<%=node['contrail']['region_name']%>
 log_local=1
 log_level=SYS_NOTICE
 
