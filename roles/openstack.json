@@ -1,0 +1,21 @@
+{
+  "name": "openstack",
+  "description": "A functional openstack node in a opencontrail cluster",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[contrail]",
+    "recipe[contrail::keystone]",
+    "recipe[contrail::glance]",
+    "recipe[contrail::cinder]",
+    "recipe[contrail::heat]",
+    "recipe[contrail::nova]",
+    "recipe[contrail::compute]",
+  ],
+  "env_run_lists": {
+  }
+}
