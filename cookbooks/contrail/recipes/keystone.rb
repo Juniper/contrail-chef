@@ -20,6 +20,13 @@ directory "/var/log/keystone" do
     action :create
 end
 
+file "/var/log/keystone/keystone.log" do
+    owner "keystone"
+    group "keystone"
+    mode '0755'
+    action :create
+end
+
 service "keystone" do
     action [:enable, :start]
 end
