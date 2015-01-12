@@ -95,7 +95,7 @@ config.imageManager.strictSSL = false;
 config.imageManager.ca = '';
 
 config.computeManager = {};
-config.computeManager.ip = '<%=node['contrail']['compute']['ip']%>';
+config.computeManager.ip = '<%=node['contrail']['openstack']['ip']%>';
 config.computeManager.port = '8774';
 config.computeManager.authProtocol = 'http';
 config.computeManager.apiVersion = ['v1.1', 'v2'];
