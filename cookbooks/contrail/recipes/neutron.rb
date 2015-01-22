@@ -36,7 +36,7 @@ bash "neutron-server-setup" do
         echo "QUANTUM_PROTOCOL=http" >> /etc/contrail/ctrl-details
         echo "ADMIN_TOKEN=#{node['contrail']['admin_token']}" >> /etc/contrail/ctrl-details
         echo "CONTROLLER=#{node['contrail']['keystone']['ip']}" >> /etc/contrail/ctrl-details
-        echo "AMQP_SERVER=#{node['contrail']['openstack']['ip']}" >> /etc/contrail/ctrl-details
+        echo "AMQP_SERVER=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM_PORT=9696" >> /etc/contrail/ctrl-details
         echo "COMPUTE=#{node['contrail']['compute']['ip']}" >> /etc/contrail/ctrl-details
