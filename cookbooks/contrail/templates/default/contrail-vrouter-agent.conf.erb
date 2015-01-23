@@ -112,7 +112,7 @@ max_control_nodes=2
 name=vhost0
 
 # IP address and prefix in ip/prefix_len format
-ip=<%="#{node['contrail']['compute']['ip']}/#{(node['contrail']['compute']['cidr'].match /\d+\.\d+\.\d+\.\d+\/(\d+)/)[1]}"%>
+ip=<%="#{node['ipaddress']}/#{(node['contrail']['compute']['cidr'].match /\d+\.\d+\.\d+\.\d+\/(\d+)/)[1]}"%>
 
 # Gateway IP address for virtual host
 gateway=<%=node['contrail']['compute']['gateway']%>

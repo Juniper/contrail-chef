@@ -60,7 +60,7 @@ template "/etc/sysconfig/network-scripts/ifcfg-vhost0" do
     mode 00644
     variables(
         :interface => node['contrail']['compute']['interface'],
-        :ip => node['contrail']['compute']['ip'],
+        :ip => node['ipaddress'],
         :netmask => node['contrail']['compute']['netmask'],
         :gateway => node['contrail']['compute']['gateway'],
         :dns1 => node['contrail']['compute']['dns1'],
