@@ -9,7 +9,7 @@
   "chef_type": "role",
   "run_list": [
     "recipe[contrail]",
-    "recipe[contrail::cfgm]"
+    "recipe[contrail::cfgm]",
     "recipe[contrail::neutron]"
   ],
   "env_run_lists": {
