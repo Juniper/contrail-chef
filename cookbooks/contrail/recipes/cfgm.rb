@@ -5,12 +5,12 @@
 # Copyright 2014, Juniper Networks
 #
 
-if platform?("redhat", "centos", "fedora")
-    yum_package "java-1.7.0-openjdk" do
-        version "1.7.0.71-2.5.3.2.el6_6"
-        allow_downgrade true
-    end
-end
+#if platform?("redhat", "centos", "fedora")
+#    yum_package "java-1.7.0-openjdk" do
+#        version "1.7.0.71-2.5.3.2.el6_6"
+#        allow_downgrade true
+#    end
+#end
 
 package "contrail-openstack-config" do
     action :upgrade
