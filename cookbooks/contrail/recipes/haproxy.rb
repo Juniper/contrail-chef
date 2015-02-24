@@ -22,7 +22,7 @@ template "/etc/haproxy/haproxy.cfg" do
     source "haproxy.cfg.erb"
     mode 00644
     variables(
-        :servers => get_cfgm_nodes,
+        :servers => get_config_nodes,
     )
     notifies :restart, "service[haproxy]", :immediately
 end

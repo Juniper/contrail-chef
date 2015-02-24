@@ -64,7 +64,7 @@ end
 template "/etc/ifmap-server/basicauthusers.properties" do
     source "ifmap-basicauthusers.properties.erb"
     mode 00644
-    variables(:servers => get_cfgm_nodes)
+    variables(:servers => get_config_nodes)
     #notifies :restart, "service[ifmap]", :immediately
 end
 

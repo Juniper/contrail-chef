@@ -25,10 +25,10 @@ def get_database_nodes
     return result.sort! { |a, b| a['hostname'] <=> b['hostname'] }
 end
 
-def get_cfgm_nodes
-    result = search(:node, "role:*cfgm* AND chef_environment:#{node.chef_environment}")
+def get_config_nodes
+    result = search(:node, "role:*config* AND chef_environment:#{node.chef_environment}")
     result.map! { |x| x['hostname'] == node['hostname'] ? node : x }
-    if not result.include?(node) and node.run_list.roles.include?('cfgm')
+    if not result.include?(node) and node.run_list.roles.include?('config')
         result.push(node)
     end
     return result.sort! { |a, b| a['hostname'] <=> b['hostname'] }
