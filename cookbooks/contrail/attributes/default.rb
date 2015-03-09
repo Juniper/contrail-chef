@@ -8,6 +8,7 @@ default['contrail']['multi_tenancy'] = false
 default['contrail']['manage_neutron'] = true
 default['contrail']['manage_nova_compute'] = true
 default['contrail']['router_asn'] = 64512
+default['contrail']['neutron_token'] = "c0ntrail123"
 default['contrail']['service_token'] = "c0ntrail123"
 default['contrail']['admin_token'] = "c0ntrail123"
 default['contrail']['admin_password'] = "c0ntrail123"
