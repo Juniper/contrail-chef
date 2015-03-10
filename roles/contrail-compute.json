@@ -1,7 +1,6 @@
-
 {
-  "name": "analytics",
-  "description": "A functional analytics node in a opencontrail cluster",
+  "name": "contrail-compute",
+  "description": "A functional compute node in a opencontrail cluster",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -10,8 +9,7 @@
   "chef_type": "role",
   "run_list": [
     "recipe[contrail]",
-    "recipe[contrail::redis]",
-    "recipe[contrail::analytics]"
+    "recipe[contrail::vrouter]"
   ],
   "env_run_lists": {
   }

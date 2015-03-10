@@ -1,6 +1,6 @@
 {
-  "name": "compute",
-  "description": "A functional compute node in a opencontrail cluster",
+  "name": "contrail-control",
+  "description": "A functional control node in a opencontrail cluster",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -9,7 +9,7 @@
   "chef_type": "role",
   "run_list": [
     "recipe[contrail]",
-    "recipe[contrail::vrouter]"
+    "recipe[contrail::control]"
   ],
   "env_run_lists": {
   }

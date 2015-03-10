@@ -50,6 +50,7 @@ end
 if node['contrail']['manage_neutron'] then
     bash "neutron-endpoint-setup" do
         user  "root"
+        region=node['contrail']['region_name']
         ks_server_ip=node['contrail']['keystone']['ip']
         region=node['contrail']['region_name']
         quant_server_ip=node['contrail']['cfgm']['ip']

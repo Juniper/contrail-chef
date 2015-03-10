@@ -1,5 +1,5 @@
 {
-  "name": "config",
+  "name": "contrail-config",
   "description": "A functional config node in a opencontrail cluster",
   "json_class": "Chef::Role",
   "default_attributes": {

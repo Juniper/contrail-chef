@@ -16,9 +16,9 @@ def get_all_roles_nodes
 end
 
 def get_database_nodes
-    result = search(:node, "role:*database* AND chef_environment:#{node.chef_environment}")
+    result = search(:node, "role:*contrail-database* AND chef_environment:#{node.chef_environment}")
     result.map! { |x| x['hostname'] == node['hostname'] ? node : x }
-    if not result.include?(node) and node.run_list.roles.include?('database')
+    if not result.include?(node) and node.run_list.roles.include?('contrail-database')
         result.push(node)
     end
     result.each { |node| node.default['contrail']['node_number'] = "#{result.rindex(node)+1}" }

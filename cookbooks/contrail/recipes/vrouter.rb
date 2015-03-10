@@ -83,6 +83,7 @@ bash "enable-vrouter" do
     interface=node['contrail']['compute']['interface']
     macaddr=`cat /sys/class/net/#{interface}/address`.chomp
     code <<-EOC
+        echo "alias bridge off" > /etc/modprobe.conf
         insmod #{vrouter_mod}
         sed --in-place '/^vrouter$/d' /etc/modules
         echo 'vrouter' >> /etc/modules

@@ -1,5 +1,5 @@
 {
-  "name": "openstack",
+  "name": "contrail-openstack",
   "description": "A functional openstack node in a opencontrail cluster",
   "json_class": "Chef::Role",
   "default_attributes": {
@@ -14,7 +14,7 @@
     "recipe[contrail::cinder]",
     "recipe[contrail::heat]",
     "recipe[contrail::nova]",
-    "recipe[contrail::compute]",
+    "recipe[contrail::compute]"
   ],
   "env_run_lists": {
   }

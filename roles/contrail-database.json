@@ -1,6 +1,6 @@
 {
-  "name": "webui",
-  "description": "A functional webui node in a opencontrail cluster",
+  "name": "contrail-database",
+  "description": "A functional database node in a opencontrail cluster",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -9,7 +9,8 @@
   "chef_type": "role",
   "run_list": [
     "recipe[contrail]",
-    "recipe[contrail::webui]"
+    "recipe[contrail::database]",
+    "recipe[contrail::zookeeper]"
   ],
   "env_run_lists": {
   }
