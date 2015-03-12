@@ -29,6 +29,11 @@ end
 
 bash "neutron-server-setup" do
     user  "root"
+    if node['contrail']['haproxy'] then
+        quantum_port=9697
+    else
+        quantum_port=9696
+    end
     code <<-EOC
         echo "SERVICE_TOKEN=#{node['contrail']['neutron_token']}" > /etc/contrail/ctrl-details
         echo "SERVICE_TENANT=service" >> /etc/contrail/ctrl-details
@@ -38,7 +43,7 @@ bash "neutron-server-setup" do
         echo "CONTROLLER=#{node['contrail']['keystone']['ip']}" >> /etc/contrail/ctrl-details
         echo "AMQP_SERVER=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
-        echo "QUANTUM_PORT=9696" >> /etc/contrail/ctrl-details
+        echo "QUANTUM_PORT=#{quantum_port}" >> /etc/contrail/ctrl-details
         echo "COMPUTE=#{node['contrail']['compute']['ip']}" >> /etc/contrail/ctrl-details
         echo "CONTROLLER_MGMT=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
         /usr/bin/quantum-server-setup.sh

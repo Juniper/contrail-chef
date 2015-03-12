@@ -63,3 +63,21 @@ backend contrail-discovery-backend
     #server  10.84.14.2 10.84.14.2:9111 check
 
 #contrail-config-marker-end
+
+<% if node['contrail']['haproxy'] -%>
+frontend quantum-server *:9696
+    default_backend    quantum-server-backend
+
+backend quantum-server-backend
+    option nolinger
+    balance     roundrobin
+<% 
+  idx = 9696
+  @servers.each do |server|
+    idx = idx + 1
+-%>
+    <%= "server #{server['contrail']['cfgm']['ip']} #{server['contrail']['cfgm']['ip']}:#{idx} check inter 2000 rise 2 fall 3" %>
+<% end -%>
+
+<% end -%>
+
