@@ -15,10 +15,6 @@ else
     end
 end
 
-if node['contrail']['haproxy'] then
-    pkgs << :haproxy
-end
-
 if platform?("ubuntu") then
     File.open("/etc/init/supervisor-vrouter.override", 'a') {|f| f.write("manual") }
 end
@@ -83,6 +79,7 @@ bash "enable-vrouter" do
     interface=node['contrail']['compute']['interface']
     macaddr=`cat /sys/class/net/#{interface}/address`.chomp
     code <<-EOC
+        rmmod bridge
         echo "alias bridge off" > /etc/modprobe.conf
         insmod #{vrouter_mod}
         sed --in-place '/^vrouter$/d' /etc/modules
