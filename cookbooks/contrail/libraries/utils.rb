@@ -28,7 +28,7 @@ end
 def get_config_nodes
     result = search(:node, "role:*config* AND chef_environment:#{node.chef_environment}")
     result.map! { |x| x['hostname'] == node['hostname'] ? node : x }
-    if not result.include?(node) and node.run_list.roles.include?('config')
+    if not result.include?(node) and node.run_list.roles.include?('contrail-config')
         result.push(node)
     end
     return result.sort! { |a, b| a['hostname'] <=> b['hostname'] }
