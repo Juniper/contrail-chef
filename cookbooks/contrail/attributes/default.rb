@@ -18,6 +18,7 @@ default['contrail']['haproxy'] = true
 default['contrail']['cfgm']['hostname'] = "a6s35"
 default['contrail']['cfgm']['ip'] = "10.84.13.35"
 default['contrail']['region_name'] = "RegionOne"
+default['contrail']['yum_repo_url'] = "file:///opt/contrail/contrail_install_repo/"
 # Openstack
 default['contrail']['openstack']['ip'] = "10.84.13.35"
 default['contrail']['openstack_root_pw'] = "contrail123"
