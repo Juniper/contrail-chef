@@ -5,14 +5,20 @@
 # Copyright 2014, Juniper Networks 
 #
 
+class ::Chef::Recipe
+  include ::Contrail
+end
+
 package "zookeeper" do
     action :upgrade
 end
 
+database_nodes = get_database_nodes
+
 template "/etc/zookeeper/conf/zoo.cfg" do
     source "zoo.cfg.erb"
     mode 00644
-    variables(:servers => get_database_nodes)
+    variables(:servers => database_nodes)
     notifies :restart, "service[zookeeper]", :immediately
 end
 

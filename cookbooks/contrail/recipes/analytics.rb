@@ -6,10 +6,16 @@
 # Copyright 2014, Juniper Networks
 #
 
+class ::Chef::Recipe
+  include ::Contrail
+end
+
 package "contrail-openstack-analytics" do
     action :upgrade
     notifies :stop, "service[supervisor-analytics]", :immediately
 end
+
+database_nodes = get_database_nodes
 
 %w{ analytics-api
     collector
@@ -20,7 +26,7 @@ end
         owner "contrail"
         group "contrail"
         mode 00640
-        variables(:servers => get_database_nodes)
+        variables(:servers => database_nodes)
         notifies :restart, "service[contrail-#{pkg}]", :immediately
     end
 end
