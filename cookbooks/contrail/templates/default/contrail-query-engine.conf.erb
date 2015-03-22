@@ -6,7 +6,7 @@
 
 [DEFAULT]
 # analytics_data_ttl=48
-  cassandra_server_list = <%= @servers.collect{|x| x['contrail']['database']['ip']+':9160'}.join(' ') %>
+  cassandra_server_list = <%= @servers.collect{|x| x['ipaddress']+':9160'}.join(' ') %>
   collectors=127.0.0.1:8086
   hostip = <%=node['contrail']['analytics']['ip']%>
 # log_category=
