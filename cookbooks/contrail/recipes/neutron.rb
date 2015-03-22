@@ -27,6 +27,8 @@ template "/etc/neutron/plugin.ini" do
     notifies :restart, "service[neutron-server]", :immediately
 end
 
+openstack_controller_node_ip = get_openstack_controller_node_ip
+
 bash "neutron-server-setup" do
     user  "root"
     if node['contrail']['haproxy'] then
@@ -40,7 +42,7 @@ bash "neutron-server-setup" do
         echo "AUTH_PROTOCOL=#{node['contrail']['protocol']['keystone']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM_PROTOCOL=http" >> /etc/contrail/ctrl-details
         echo "ADMIN_TOKEN=#{node['contrail']['admin_token']}" >> /etc/contrail/ctrl-details
-        echo "CONTROLLER=#{node['contrail']['keystone']['ip']}" >> /etc/contrail/ctrl-details
+        echo "CONTROLLER=#{openstack_controller_node_ip}" >> /etc/contrail/ctrl-details
         echo "AMQP_SERVER=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM_PORT=#{quantum_port}" >> /etc/contrail/ctrl-details
@@ -56,7 +58,7 @@ if node['contrail']['manage_neutron'] then
     bash "neutron-endpoint-setup" do
         user  "root"
         region=node['contrail']['region_name']
-        ks_server_ip=node['contrail']['keystone']['ip']
+        ks_server_ip=openstack_controller_node_ip
         region=node['contrail']['region_name']
         quant_server_ip=node['contrail']['cfgm']['ip']
         admin_user=node['contrail']['admin_user']

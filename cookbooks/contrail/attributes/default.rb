@@ -23,7 +23,6 @@ default['contrail']['yum_repo_url'] = "file:///opt/contrail/contrail_install_rep
 default['contrail']['openstack_controller_role'] = "contrail-openstack"
 default['contrail']['openstack_root_pw'] = "contrail123"
 # Keystone
-default['contrail']['keystone']['ip'] = "10.84.13.35"
 default['contrail']['protocol']['keystone'] = "http"
 #Database
 default['contrail']['database']['ip'] = "10.84.13.35"

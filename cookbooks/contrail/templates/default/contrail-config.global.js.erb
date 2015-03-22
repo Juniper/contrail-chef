@@ -103,7 +103,7 @@ config.computeManager.strictSSL = false;
 config.computeManager.ca = '';
 
 config.identityManager = {};
-config.identityManager.ip = '<%=node['contrail']['keystone']['ip']%>';
+config.identityManager.ip = '<%= @openstack_controller_ip %>';
 config.identityManager.port = '5000';
 config.identityManager.authProtocol = '<%=node['contrail']['protocol']['keystone']%>';
 /******************************************************************************

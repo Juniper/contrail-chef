@@ -74,11 +74,14 @@ template "/etc/ifmap-server/basicauthusers.properties" do
     #notifies :restart, "service[ifmap]", :immediately
 end
 
+openstack_controller_node_ip = get_openstack_controller_node_ip
+
 template "/etc/contrail/vnc_api_lib.ini" do
     source "contrail-vnc_api_lib.ini.erb"
     owner "contrail"
     group "contrail"
     mode 00644
+    variables(:keystone_server_ip => openstack_controller_node_ip)
 end
 
 database_nodes = get_database_nodes
@@ -93,7 +96,8 @@ database_nodes = get_database_nodes
         owner "contrail"
         group "contrail"
         mode 00640
-        variables(:servers => database_nodes)
+        variables(:servers            => database_nodes,
+                  :keystone_server_ip => openstack_controller_node_ip)
         notifies :restart, "service[#{pkg}]", :immediately
     end
 end

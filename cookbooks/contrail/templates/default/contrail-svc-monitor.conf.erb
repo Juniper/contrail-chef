@@ -33,7 +33,7 @@ analytics_server_ip=<%=node['contrail']['analytics']['ip']%>
 analytics_server_port=8081
 
 [KEYSTONE]
-auth_host=<%=node['contrail']['keystone']['ip']%>
+auth_host=<%= @keystone_server_ip %>
 auth_protocol=<%=node['contrail']['protocol']['keystone']%>
 auth_port=35357
 admin_user=<%=node['contrail']['admin_user']%>
