@@ -19,7 +19,7 @@ log_level=SYS_NOTICE
 disc_server_ip=<%=node['contrail']['cfgm']['ip']%>
 disc_server_port=5998
 zk_server_ip = <%= @servers.collect{|x| x['ipaddress']+':2181'}.join(',') %>
-redis_server_ip=<%=node['contrail']['analytics']['ip']%>
+redis_server_ip=<%=node['ipaddress']%>
 rabbit_server=<%=node['contrail']['cfgm']['ip']%>
 rabbit_port=5672
 auth = keystone

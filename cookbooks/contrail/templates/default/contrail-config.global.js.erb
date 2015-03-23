@@ -135,7 +135,7 @@ config.cnfg.ca = '';
 
 // Analytics API server and port.
 config.analytics = {};
-config.analytics.server_ip = '<%=node['contrail']['analytics']['ip']%>';
+config.analytics.server_ip = '<%=node['ipaddress']%>';
 config.analytics.server_port = '8081';
 config.analytics.authProtocol = 'http';
 config.analytics.strictSSL = false;
@@ -210,7 +210,7 @@ config.redisDBIndex = 1;
 
 /* WebUI Redis Server */
 config.redis_server_port = '6379';
-config.redis_server_ip = '<%=node['contrail']['analytics']['ip']%>';
+config.redis_server_ip = '<%=node['ipaddress']%>';
 config.redis_dump_file = '/var/lib/redis/dump-webui.rdb';
 
 /* Logo File: Use complete path of logo file location */

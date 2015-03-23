@@ -29,7 +29,7 @@ certfile=/etc/contrail/ssl/certs/svc_monitor.pem
 ca_certs=/etc/contrail/ssl/certs/ca.pem
 
 [SCHEDULER]
-analytics_server_ip=<%=node['contrail']['analytics']['ip']%>
+analytics_server_ip=<%=node['ipaddress']%>
 analytics_server_port=8081
 
 [KEYSTONE]
