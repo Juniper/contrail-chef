@@ -5,6 +5,10 @@
 # Copyright 2014, Juniper Networks
 #
 
+class ::Chef::Recipe
+  include ::Contrail
+end
+
 package "haproxy" do
     action :upgrade
 end
@@ -18,11 +22,13 @@ end
 #    not_if "grep -e '^ENABLED=1' /etc/default/haproxy"
 #end
 
+config_nodes = get_config_nodes
+
 template "/etc/haproxy/haproxy.cfg" do
     source "haproxy.cfg.erb"
     mode 00644
     variables(
-        :servers => get_config_nodes,
+        :servers => config_nodes,
     )
     notifies :restart, "service[haproxy]", :immediately
 end

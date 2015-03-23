@@ -12,6 +12,10 @@
 #    end
 #end
 
+class ::Chef::Recipe
+  include ::Contrail
+end
+
 package "contrail-openstack-config" do
     action :upgrade
     notifies :stop, "service[supervisor-config]", :immediately
@@ -61,10 +65,12 @@ template "/etc/ifmap-server/ifmap.properties" do
     notifies :restart, "service[contrail-api]", :immediately
 end
 
+config_nodes = get_config_nodes
+
 template "/etc/ifmap-server/basicauthusers.properties" do
     source "ifmap-basicauthusers.properties.erb"
     mode 00644
-    variables(:servers => get_config_nodes)
+    variables(:servers => config_nodes)
     #notifies :restart, "service[ifmap]", :immediately
 end
 
@@ -74,6 +80,8 @@ template "/etc/contrail/vnc_api_lib.ini" do
     group "contrail"
     mode 00644
 end
+
+database_nodes = get_database_nodes
 
 %w{ contrail-discovery
     contrail-svc-monitor
@@ -85,7 +93,7 @@ end
         owner "contrail"
         group "contrail"
         mode 00640
-        variables(:servers => get_database_nodes)
+        variables(:servers => database_nodes)
         notifies :restart, "service[#{pkg}]", :immediately
     end
 end
@@ -169,7 +177,7 @@ get_compute_nodes.each do |server|
         hostname=server['hostname']
         hostip=server['ipaddress']
         cfgm_ip=node['contrail']['cfgm']['ip']
-        openstack_ip=node['contrail']['openstack']['ip']
+        openstack_ip=openstack_controller_node_ip
         code <<-EOH
             python /opt/contrail/utils/provision_vrouter.py \
                 --admin_user #{admin_user} \

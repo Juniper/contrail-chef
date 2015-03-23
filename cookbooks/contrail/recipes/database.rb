@@ -5,6 +5,10 @@
 # Copyright 2014, Juniper Networks
 #
 
+class ::Chef::Recipe
+  include ::Contrail
+end
+
 package "contrail-openstack-database" do
     action :upgrade
     notifies :stop, "service[supervisor-database]", :immediately
@@ -23,10 +27,11 @@ bash "remove-initial-cassandra-data-dir" do
 end
 
 %w{cassandra-env.sh cassandra-rackdc.properties cassandra.yaml}.each do |file|
+    database_nodes = get_database_nodes
     template "/etc/cassandra/conf/#{file}" do
         source "#{file}.erb"
         mode 00644
-        variables(:servers => get_database_nodes)
+        variables(:servers => database_nodes)
         notifies :restart, "service[contrail-database]", :delayed
     end
 end

@@ -87,7 +87,7 @@ config.networkManager.strictSSL = false;
 config.networkManager.ca = '';
 
 config.imageManager = {};
-config.imageManager.ip = '<%=node['contrail']['openstack']['ip']%>';
+config.imageManager.ip = '<%= @openstack_controller_ip %>';
 config.imageManager.port = '9292';
 config.imageManager.authProtocol = 'http';
 config.imageManager.apiVersion = ['v1', 'v2'];
@@ -95,7 +95,7 @@ config.imageManager.strictSSL = false;
 config.imageManager.ca = '';
 
 config.computeManager = {};
-config.computeManager.ip = '<%=node['contrail']['openstack']['ip']%>';
+config.computeManager.ip = '<%= @openstack_controller_ip %>';
 config.computeManager.port = '8774';
 config.computeManager.authProtocol = 'http';
 config.computeManager.apiVersion = ['v1.1', 'v2'];
@@ -118,7 +118,7 @@ config.identityManager.strictSSL = false;
 config.identityManager.ca = '';
 
 config.storageManager = {};
-config.storageManager.ip = '<%=node['contrail']['openstack']['ip']%>';
+config.storageManager.ip = '<%= @openstack_controller_ip %>';
 config.storageManager.port = '8776';
 config.storageManager.authProtocol = 'http';
 config.storageManager.apiVersion = ['v1'];
