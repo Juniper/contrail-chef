@@ -12,7 +12,7 @@
 # named_log_file=/var/log/named/bind.log   # named log file
 # rndc_config_file=rndc.conf               # rndc config file
 # rndc_secret=secretkey                    # rndc secret
-hostip = <%=node['contrail']['control']['ip']%>
+hostip = <%= node['ipaddress'] %>
 # hostname= # Retrieved as `hostname`
 # http_server_port=8092
 # dns_server_port=53
@@ -32,5 +32,5 @@ server =  <%=node['contrail']['cfgm']['ip']%>
 
 [IFMAP]
 certs_store=
-user = <%=node['contrail']['control']['ip']%>.dns
-password = <%=node['contrail']['control']['ip']%>.dns
+user = <%= node['ipaddress'] %>.dns
+password = <%= node['ipaddress'] %>.dns

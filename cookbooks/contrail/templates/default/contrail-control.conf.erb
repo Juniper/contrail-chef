@@ -9,7 +9,7 @@ log_file = /var/log/contrail/contrail-control.log
 # bgp_config_file=bgp_config.xml
 # bgp_port=179
 # collectors= # Provided by discovery server
-hostip = <%=node['contrail']['control']['ip']%>
+hostip = <%= node['ipaddress'] %>
 # hostname= # Retrieved as `hostname`
 # http_server_port=8083
 # log_category=
@@ -28,5 +28,5 @@ server =  <%=node['contrail']['cfgm']['ip']%>
 
 [IFMAP]
 certs_store=
-user = <%=node['contrail']['control']['ip']%>
-password = <%=node['contrail']['control']['ip']%>
+user = <%= node['ipaddress'] %>
+password = <%= node['ipaddress'] %>

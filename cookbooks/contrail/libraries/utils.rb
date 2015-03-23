@@ -50,13 +50,18 @@ module ::Contrail
     resp ? resp : []
   end
 
-  def get_openstack_controller_nodes
-    search_for(node['contrail']['openstack_controller_role'])
+  def get_openstack_controller_node_ip
+    controller_nodes = search_for(node['contrail']['openstack_controller_role'])
+    msg = "Can't find OpenStack controller node with role '#{node['contrail']['openstack_controller_role']}'"
+    if controller_nodes.length < 1
+      raise msg
+    end
+    controller_nodes.first["ipaddress"]
   end
 
-  def get_openstack_controller_node_ip
-    controller_nodes = get_openstack_controller_nodes
-    msg = "Can't find OpenStack controller node with role '#{node['contrail']['openstack_controller_role']}'"
+  def get_contrail_controller_node_ip
+    controller_nodes = search_for(node['contrail']['controller_role'])
+    msg = "Can't find Contrail controller node with role '#{node['contrail']['controller_role']}'"
     if controller_nodes.length < 1
       raise msg
     end

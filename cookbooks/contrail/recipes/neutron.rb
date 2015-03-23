@@ -5,6 +5,10 @@
 # Copyright 2014, Juniper Networks
 #
 
+class ::Chef::Recipe
+  include ::Contrail
+end
+
 %w{ openstack-neutron
     neutron-plugin-contrail
     python-simplejson

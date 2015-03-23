@@ -142,9 +142,9 @@ bash "provision_control" do
     admin_password=node['contrail']['admin_password']
     admin_tenant_name=node['contrail']['admin_tenant_name']
     cfgm_ip=node['contrail']['cfgm']['ip']
-    ctrl_ip=node['contrail']['control']['ip']
+    ctrl_ip=node['ipaddress']
     asn=node['contrail']['router_asn']
-    hostname=node['contrail']['control']['hostname']
+    hostname=node['hostname']
     code <<-EOH
         python /opt/contrail/utils/provision_control.py \
             --admin_user #{admin_user} \
