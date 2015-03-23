@@ -37,7 +37,7 @@ describe 'contrail::default' do
       end
     end
 
-    describe '#openstack_controller_node_ip' do
+    describe '#get_openstack_controller_node_ip' do
       it 'returns the correct IP address' do
         search_results = [
           { 'ipaddress' => '1.2.3.4' }

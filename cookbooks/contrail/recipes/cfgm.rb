@@ -177,7 +177,7 @@ get_compute_nodes.each do |server|
         hostname=server['hostname']
         hostip=server['ipaddress']
         cfgm_ip=node['contrail']['cfgm']['ip']
-        openstack_ip=openstack_controller_node_ip
+        openstack_ip=get_openstack_controller_node_ip
         code <<-EOH
             python /opt/contrail/utils/provision_vrouter.py \
                 --admin_user #{admin_user} \
