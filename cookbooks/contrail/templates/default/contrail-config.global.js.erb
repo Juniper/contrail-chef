@@ -79,7 +79,7 @@ config.serviceEndPointTakePublicURL = true;
  *      if you do not want to specify then use ''
 *****************************************************************************/
 config.networkManager = {};
-config.networkManager.ip = '<%=node['contrail']['cfgm']['ip']%>';
+config.networkManager.ip = '<%=node['ipaddress']%>';
 config.networkManager.port = '9696'
 config.networkManager.authProtocol = 'http';
 config.networkManager.apiVersion = [];
@@ -127,7 +127,7 @@ config.storageManager.ca = '';
 
 // VNConfig API server and port.
 config.cnfg = {};
-config.cnfg.server_ip = '<%=node['contrail']['cfgm']['ip']%>';
+config.cnfg.server_ip = '<%=node['ipaddress']%>';
 config.cnfg.server_port = '8082';
 config.cnfg.authProtocol = 'http';
 config.cnfg.strictSSL = false;
@@ -154,7 +154,7 @@ config.vcenter.wsdl = '/usr/src/contrail/contrail-web-core/webroot/js/vim.wsdl';
 
 /* Discovery Service */
 config.discoveryService = {};
-config.discoveryService.server_ip = '<%=node['contrail']['cfgm']['ip']%>';
+config.discoveryService.server_ip = '<%=node['ipaddress']%>';
 config.discoveryService.server_port = '5998';
 /* Specifiy true if subscription to discovery server should be enabled, else
  * specify false. Other than true/false value here is treated as true

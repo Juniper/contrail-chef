@@ -121,7 +121,7 @@ bash "provision_metadata_services" do
     admin_user=node['contrail']['admin_user']
     admin_password=node['contrail']['admin_password']
     admin_tenant_name=node['contrail']['admin_tenant_name']
-    cfgm_ip=node['contrail']['cfgm']['ip']
+    cfgm_ip=node['ipaddress']
     code <<-EOH
         python /opt/contrail/utils/provision_linklocal.py \
             --admin_user #{admin_user} \
@@ -141,7 +141,7 @@ bash "provision_control" do
     admin_user=node['contrail']['admin_user']
     admin_password=node['contrail']['admin_password']
     admin_tenant_name=node['contrail']['admin_tenant_name']
-    cfgm_ip=node['contrail']['cfgm']['ip']
+    cfgm_ip=node['ipaddress']
     ctrl_ip=node['ipaddress']
     asn=node['contrail']['router_asn']
     hostname=node['hostname']
@@ -180,7 +180,7 @@ get_compute_nodes.each do |server|
         admin_tenant_name=node['contrail']['admin_tenant_name']
         hostname=server['hostname']
         hostip=server['ipaddress']
-        cfgm_ip=node['contrail']['cfgm']['ip']
+        cfgm_ip=node['ipaddress']
         openstack_ip=get_openstack_controller_node_ip
         code <<-EOH
             python /opt/contrail/utils/provision_vrouter.py \

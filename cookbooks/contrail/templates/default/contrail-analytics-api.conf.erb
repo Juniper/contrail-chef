@@ -17,7 +17,7 @@ log_category =
 log_file = /var/log/contrail/contrail-analytics-api.log
 
 [DISCOVERY]
-disc_server_ip = <%=node['contrail']['cfgm']['ip']%>
+disc_server_ip = <%=node['ipaddress']%>
 disc_server_port = 5998
 
 [REDIS]

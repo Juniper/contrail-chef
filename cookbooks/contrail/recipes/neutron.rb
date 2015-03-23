@@ -47,11 +47,11 @@ bash "neutron-server-setup" do
         echo "QUANTUM_PROTOCOL=http" >> /etc/contrail/ctrl-details
         echo "ADMIN_TOKEN=#{node['contrail']['admin_token']}" >> /etc/contrail/ctrl-details
         echo "CONTROLLER=#{openstack_controller_node_ip}" >> /etc/contrail/ctrl-details
-        echo "AMQP_SERVER=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
-        echo "QUANTUM=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
+        echo "AMQP_SERVER=#{node['ipaddress']}" >> /etc/contrail/ctrl-details
+        echo "QUANTUM=#{node['ipaddress']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM_PORT=#{quantum_port}" >> /etc/contrail/ctrl-details
         echo "COMPUTE=#{node['contrail']['compute']['ip']}" >> /etc/contrail/ctrl-details
-        echo "CONTROLLER_MGMT=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
+        echo "CONTROLLER_MGMT=#{node['ipaddress']}" >> /etc/contrail/ctrl-details
         /usr/bin/quantum-server-setup.sh
     EOC
 #    not_if { ::File.exists?("/etc/contrail/ctrl-details") }
@@ -64,7 +64,7 @@ if node['contrail']['manage_neutron'] then
         region=node['contrail']['region_name']
         ks_server_ip=openstack_controller_node_ip
         region=node['contrail']['region_name']
-        quant_server_ip=node['contrail']['cfgm']['ip']
+        quant_server_ip=node['ipaddress']
         admin_user=node['contrail']['admin_user']
         admin_password=node['contrail']['admin_password']
         admin_tenant_name=node['contrail']['admin_tenant_name']

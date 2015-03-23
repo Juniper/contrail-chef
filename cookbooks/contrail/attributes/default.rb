@@ -15,8 +15,6 @@ default['contrail']['admin_password'] = "c0ntrail123"
 default['contrail']['admin_user'] = "admin"
 default['contrail']['admin_tenant_name'] = "admin"
 default['contrail']['haproxy'] = true
-default['contrail']['cfgm']['hostname'] = "a6s35"
-default['contrail']['cfgm']['ip'] = "10.84.13.35"
 default['contrail']['region_name'] = "RegionOne"
 default['contrail']['yum_repo_url'] = "file:///opt/contrail/contrail_install_repo/"
 # Openstack

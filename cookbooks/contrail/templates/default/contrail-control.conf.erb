@@ -23,7 +23,7 @@ hostip = <%= node['ipaddress'] %>
 # xmpp_server_port=5269
 
 [DISCOVERY]
-server =  <%=node['contrail']['cfgm']['ip']%>
+server =  <%=node['ipaddress']%>
 #port = 5998
 
 [IFMAP]

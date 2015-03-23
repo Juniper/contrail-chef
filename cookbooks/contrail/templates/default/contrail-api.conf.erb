@@ -5,7 +5,7 @@
 ################################################
 
 [DEFAULTS]
-ifmap_server_ip = <%=node['contrail']['cfgm']['ip']%>
+ifmap_server_ip = <%=node['ipaddress']%>
 ifmap_server_port = 8445
 ifmap_username = api-server
 ifmap_password = api-server
@@ -16,11 +16,11 @@ multi_tenancy=<%=node['contrail']['multi_tenancy']%>
 log_file=/var/log/contrail/contrail-api.log
 log_local=1
 log_level=SYS_NOTICE
-disc_server_ip=<%=node['contrail']['cfgm']['ip']%>
+disc_server_ip=<%=node['ipaddress']%>
 disc_server_port=5998
 zk_server_ip = <%= @servers.collect{|x| x['ipaddress']+':2181'}.join(',') %>
 redis_server_ip=<%=node['ipaddress']%>
-rabbit_server=<%=node['contrail']['cfgm']['ip']%>
+rabbit_server=<%=node['ipaddress']%>
 rabbit_port=5672
 auth = keystone
 

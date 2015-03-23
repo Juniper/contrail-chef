@@ -43,7 +43,7 @@ backend contrail-api-backend
   @servers.each do |server|
     idx = idx + 1
 -%>
-    <%= "server #{server['contrail']['cfgm']['ip']} #{server['contrail']['cfgm']['ip']}:#{idx} check inter 2000 rise 2 fall 3" %>
+    <%= "server #{server['ipaddress']} #{server['ipaddress']}:#{idx} check inter 2000 rise 2 fall 3" %>
 <% end -%>
     #server  10.84.14.2 10.84.14.2:9100 check
     #server  10.84.14.2 10.84.14.2:9101 check
@@ -56,7 +56,7 @@ backend contrail-discovery-backend
   @servers.each do |server|
     idx = idx + 1
 -%>
-    <%= "server #{server['contrail']['cfgm']['ip']} #{server['contrail']['cfgm']['ip']}:#{idx} check inter 2000 rise 2 fall 3" %>
+    <%= "server #{server['ipaddress']} #{server['ipaddress']}:#{idx} check inter 2000 rise 2 fall 3" %>
 <% end -%>
 
     #server  10.84.14.2 10.84.14.2:9110 check
@@ -76,7 +76,7 @@ backend quantum-server-backend
   @servers.each do |server|
     idx = idx + 1
 -%>
-    <%= "server #{server['contrail']['cfgm']['ip']} #{server['contrail']['cfgm']['ip']}:#{idx} check inter 2000 rise 2 fall 3" %>
+    <%= "server #{server['ipaddress']} #{server['ipaddress']}:#{idx} check inter 2000 rise 2 fall 3" %>
 <% end -%>
 
 <% end -%>

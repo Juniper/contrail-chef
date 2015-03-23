@@ -43,11 +43,11 @@ bash "keystone-server-setup" do
         echo "ADMIN_TOKEN=#{node['contrail']['admin_token']}" >> /etc/contrail/ctrl-details
         echo "CONTROLLER=#{openstack_controller_node_ip}" >> /etc/contrail/ctrl-details
         echo "AMQP_SERVER=#{openstack_controller_node_ip}" >> /etc/contrail/ctrl-details
-        echo "QUANTUM=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
+        echo "QUANTUM=#{node['ipaddress']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM_PORT=9696" >> /etc/contrail/ctrl-details
         echo "OPENSTACK_INDEX=1" >> /etc/contrail/ctrl-details
         echo "COMPUTE=#{node['contrail']['compute']['ip']}" >> /etc/contrail/ctrl-details
-        echo "CONTROLLER_MGMT=#{node['contrail']['cfgm']['ip']}" >> /etc/contrail/ctrl-details
+        echo "CONTROLLER_MGMT=#{node['ipaddress']}" >> /etc/contrail/ctrl-details
         /usr/bin/keystone-server-setup.sh
     EOC
 #    not_if { ::File.exists?("/etc/contrail/ctrl-details") }
