@@ -74,11 +74,14 @@ template "/etc/ifmap-server/basicauthusers.properties" do
     #notifies :restart, "service[ifmap]", :immediately
 end
 
+openstack_controller_node_ip = get_openstack_controller_node_ip
+
 template "/etc/contrail/vnc_api_lib.ini" do
     source "contrail-vnc_api_lib.ini.erb"
     owner "contrail"
     group "contrail"
     mode 00644
+    variables(:keystone_server_ip => openstack_controller_node_ip)
 end
 
 database_nodes = get_database_nodes
@@ -93,7 +96,8 @@ database_nodes = get_database_nodes
         owner "contrail"
         group "contrail"
         mode 00640
-        variables(:servers => database_nodes)
+        variables(:servers            => database_nodes,
+                  :keystone_server_ip => openstack_controller_node_ip)
         notifies :restart, "service[#{pkg}]", :immediately
     end
 end
@@ -117,7 +121,7 @@ bash "provision_metadata_services" do
     admin_user=node['contrail']['admin_user']
     admin_password=node['contrail']['admin_password']
     admin_tenant_name=node['contrail']['admin_tenant_name']
-    cfgm_ip=node['contrail']['cfgm']['ip']
+    cfgm_ip=node['ipaddress']
     code <<-EOH
         python /opt/contrail/utils/provision_linklocal.py \
             --admin_user #{admin_user} \
@@ -137,10 +141,10 @@ bash "provision_control" do
     admin_user=node['contrail']['admin_user']
     admin_password=node['contrail']['admin_password']
     admin_tenant_name=node['contrail']['admin_tenant_name']
-    cfgm_ip=node['contrail']['cfgm']['ip']
-    ctrl_ip=node['contrail']['control']['ip']
+    cfgm_ip=node['ipaddress']
+    ctrl_ip=node['ipaddress']
     asn=node['contrail']['router_asn']
-    hostname=node['contrail']['control']['hostname']
+    hostname=node['hostname']
     code <<-EOH
         python /opt/contrail/utils/provision_control.py \
             --admin_user #{admin_user} \
@@ -176,8 +180,8 @@ get_compute_nodes.each do |server|
         admin_tenant_name=node['contrail']['admin_tenant_name']
         hostname=server['hostname']
         hostip=server['ipaddress']
-        cfgm_ip=node['contrail']['cfgm']['ip']
-        openstack_ip=openstack_controller_node_ip
+        cfgm_ip=node['ipaddress']
+        openstack_ip=get_openstack_controller_node_ip
         code <<-EOH
             python /opt/contrail/utils/provision_vrouter.py \
                 --admin_user #{admin_user} \

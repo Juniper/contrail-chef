@@ -15,23 +15,15 @@ default['contrail']['admin_password'] = "c0ntrail123"
 default['contrail']['admin_user'] = "admin"
 default['contrail']['admin_tenant_name'] = "admin"
 default['contrail']['haproxy'] = true
-default['contrail']['cfgm']['hostname'] = "a6s35"
-default['contrail']['cfgm']['ip'] = "10.84.13.35"
 default['contrail']['region_name'] = "RegionOne"
 default['contrail']['yum_repo_url'] = "file:///opt/contrail/contrail_install_repo/"
 # Openstack
 default['contrail']['openstack_controller_role'] = "contrail-openstack"
 default['contrail']['openstack_root_pw'] = "contrail123"
 # Keystone
-default['contrail']['keystone']['ip'] = "10.84.13.35"
 default['contrail']['protocol']['keystone'] = "http"
-#Database
-default['contrail']['database']['ip'] = "10.84.13.35"
 # Control
-default['contrail']['control']['ip'] = "10.84.13.35"
-default['contrail']['control']['hostname'] = "a6s35"
-# Analytics
-default['contrail']['analytics']['ip'] = "10.84.13.35"
+default['contrail']['controller_role'] = "contrail-control"
 # Compute
 default['contrail']['compute']['interface'] = "eth1"
 default['contrail']['compute']['hostname'] = "a6s35"

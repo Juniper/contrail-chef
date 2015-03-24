@@ -6,19 +6,19 @@ describe 'contrail::default' do
 
   describe 'Contrail Search' do
     let(:runner) { ChefSpec::Runner.new }
-    let(:chef_run) do
-      node.set['contrail']['openstack_controller_role'] = 'os-controller-role'
-      runner.converge(described_recipe)
-    end
-    let(:node) { runner.node }
+    let(:chef_run) { runner.converge(described_recipe) }
     let(:subject) { Object.new.extend(Contrail) }
+    let(:node) { runner.node }
+
+    before do
+      allow(subject).to receive(:node).and_return(chef_run.node)
+    end
 
     describe '#search_for' do
       it 'returns the correct result' do
         search_results = [
           { 'hostname' => 'dummynode' }
         ]
-        expect(subject).to receive(:node).and_return(chef_run.node)
         expect(subject).to receive(:search)
           .with(:node, 'roles:dummy-role AND chef_environment:_default')
           .and_return(search_results)
@@ -28,7 +28,6 @@ describe 'contrail::default' do
       end
 
       it 'always returns an empty list' do
-        expect(subject).to receive(:node).and_return(chef_run.node)
         expect(subject).to receive(:search)
           .with(:node, 'roles:simple-role AND chef_environment:_default')
           .and_return(nil)
@@ -37,27 +36,41 @@ describe 'contrail::default' do
       end
     end
 
-    describe '#openstack_controller_node_ip' do
+    describe '#get_openstack_controller_node_ip' do
       it 'returns the correct IP address' do
         search_results = [
           { 'ipaddress' => '1.2.3.4' }
         ]
-        expect(subject).to receive(:node).exactly(3).and_return(chef_run.node)
         expect(subject).to receive(:search)
-          .with(:node, 'roles:os-controller-role AND chef_environment:_default')
+          .with(:node, 'roles:contrail-openstack AND chef_environment:_default')
           .and_return(search_results)
         resp = subject.get_openstack_controller_node_ip
         expect(resp).to eq '1.2.3.4'
       end
 
-      it 'raises an error when there are not OpenStack controller nodes' do
-        expect(subject).to receive(:node).exactly(2).and_return(chef_run.node)
+      it 'raises an error when there are no OpenStack controller nodes' do
         expect(subject).to receive(:search)
-          .with(:node, 'roles:os-controller-role AND chef_environment:_default')
+          .with(:node, 'roles:contrail-openstack AND chef_environment:_default')
           .and_return([])
         expect { subject.get_openstack_controller_node_ip }.to raise_error
       end
+    end
 
+    describe '#get_contrail_controller_node_ip' do
+      it 'returns the correct IP address' do
+        expect(subject).to receive(:search)
+          .with(:node, 'roles:contrail-control AND chef_environment:_default')
+          .and_return([ {'ipaddress' => '5.6.7.8'} ])
+        resp = subject.get_contrail_controller_node_ip
+        expect(resp).to eq '5.6.7.8'
+      end
+
+      it 'raises an error when there are no Contrail controller nodes' do
+        expect(subject).to receive(:search)
+          .with(:node, 'roles:contrail-control AND chef_environment:_default')
+          .and_return([])
+        expect { subject.get_contrail_controller_node_ip }.to raise_error
+      end
     end
 
   end

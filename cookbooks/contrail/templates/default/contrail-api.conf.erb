@@ -5,22 +5,22 @@
 ################################################
 
 [DEFAULTS]
-ifmap_server_ip = <%=node['contrail']['cfgm']['ip']%>
+ifmap_server_ip = <%=node['ipaddress']%>
 ifmap_server_port = 8445
 ifmap_username = api-server
 ifmap_password = api-server
-cassandra_server_list = <%= @servers.collect{|x| x['contrail']['database']['ip']+':9160'}.join(' ') %>
+cassandra_server_list = <%= @servers.collect{|x| x['ipaddress']+':9160'}.join(' ') %>
 listen_ip_addr=0.0.0.0
 listen_port=8082
 multi_tenancy=<%=node['contrail']['multi_tenancy']%>
 log_file=/var/log/contrail/contrail-api.log
 log_local=1
 log_level=SYS_NOTICE
-disc_server_ip=<%=node['contrail']['cfgm']['ip']%>
+disc_server_ip=<%=node['ipaddress']%>
 disc_server_port=5998
-zk_server_ip = <%= @servers.collect{|x| x['contrail']['database']['ip']+':2181'}.join(',') %>
-redis_server_ip=<%=node['contrail']['analytics']['ip']%>
-rabbit_server=<%=node['contrail']['cfgm']['ip']%>
+zk_server_ip = <%= @servers.collect{|x| x['ipaddress']+':2181'}.join(',') %>
+redis_server_ip=<%=node['ipaddress']%>
+rabbit_server=<%=node['ipaddress']%>
 rabbit_port=5672
 auth = keystone
 
@@ -31,7 +31,7 @@ certfile=/etc/contrail/ssl/certs/apiserver.pem
 ca_certs=/etc/contrail/ssl/certs/ca.pem
 
 [KEYSTONE]
-auth_host=<%=node['contrail']['keystone']['ip']%>
+auth_host=<%= @keystone_server_ip %>
 auth_protocol=<%=node['contrail']['protocol']['keystone']%>
 auth_port=35357
 admin_user=<%=node['contrail']['admin_user']%>

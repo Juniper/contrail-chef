@@ -12,10 +12,10 @@
 
 # IP address and port to be used to connect to cassandra.
 # Multiple IP:port strings separated by space can be provided
-cassandra_server_list = <%= @servers.collect{|x| x['contrail']['database']['ip']+':9160'}.join(' ') %>
+cassandra_server_list = <%= @servers.collect{|x| x['ipaddress']+':9160'}.join(' ') %>
 
 # IP address of analytics node. Resolved IP of 'hostname'
-hostip = <%=node['contrail']['analytics']['ip']%>
+hostip = <%=node['ipaddress']%>
 
 # Hostname of analytics node. If this is not configured value from ostname# will be taken
 # hostname=
@@ -66,7 +66,7 @@ log_local=1
 # port=5998
 
 # IP address of discovery server
-server = <%=node['contrail']['cfgm']['ip']%>
+server = <%=node['ipaddress']%>
 
 [REDIS]
 # Port to connect to for communicating with redis-server

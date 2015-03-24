@@ -5,8 +5,8 @@
 ################################################
 
 [DEFAULTS]
-host_ip = <%=node['contrail']['analytics']['ip']%>
-cassandra_server_list = <%= @servers.collect{|x| x['contrail']['database']['ip']+':9160'}.join(' ') %>
+host_ip = <%=node['ipaddress']%>
+cassandra_server_list = <%= @servers.collect{|x| x['ipaddress']+':9160'}.join(' ') %>
 collectors = 127.0.0.1:8086
 http_server_port = 8090
 rest_api_port = 8081
@@ -17,7 +17,7 @@ log_category =
 log_file = /var/log/contrail/contrail-analytics-api.log
 
 [DISCOVERY]
-disc_server_ip = <%=node['contrail']['cfgm']['ip']%>
+disc_server_ip = <%=node['ipaddress']%>
 disc_server_port = 5998
 
 [REDIS]
