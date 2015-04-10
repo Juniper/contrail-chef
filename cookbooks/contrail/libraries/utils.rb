@@ -68,4 +68,15 @@ module ::Contrail
     controller_nodes.first["ipaddress"]
   end
 
+  def get_interface_address(interface)
+    if node["network"]['interfaces'].key?(interface)
+      node["network"]['interfaces'][interface]['addresses'].each do |ip, params|
+        if params['family'] == 'inet'
+          return ip
+        end
+      end
+    end
+    nil
+  end
+
 end
