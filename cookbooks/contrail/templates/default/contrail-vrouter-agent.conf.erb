@@ -57,7 +57,7 @@ log_level=SYS_INFO
 #mandatory. Else this section is optional
 
 # IP address of discovery server
-server=<%=node['ipaddress']%>
+server=<%= @contrail_controller_node_ip %>
 
 # Number of control-nodes info to be provided by Discovery service. Possible
 # values are 1 and 2

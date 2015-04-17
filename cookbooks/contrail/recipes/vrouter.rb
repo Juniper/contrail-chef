@@ -5,6 +5,10 @@
 # Copyright 2014, Juniper Networks
 #
 
+class ::Chef::Recipe
+  include ::Contrail
+end
+
 if node['contrail']['manage_nova_compute'] then
     pkgs = %w( contrail-openstack-vrouter )
 else 
@@ -25,9 +29,14 @@ pkgs.each do |pkg|
     end
 end
 
+contrail_controller_node_ip = get_contrail_controller_node_ip
+
 template "/etc/contrail/vrouter_nodemgr_param" do
     source "vrouter_nodemgr_param.erb"
     mode 00644
+    variables(
+        :contrail_controller_node_ip => contrail_controller_node_ip
+    )
 end
 
 template "/etc/contrail/default_pmac" do
@@ -49,14 +58,17 @@ end
 
 service 'network'
 
+interface = node['contrail']['compute']['interface']
+ip_address = get_interface_address(interface) || node['contrail']['compute']['ip']
+
 template "/etc/sysconfig/network-scripts/ifcfg-vhost0" do
     source "network.vhost.erb"
     owner "root"
     group "root"
     mode 00644
     variables(
-        :interface => node['contrail']['compute']['interface'],
-        :ip => node['ipaddress'],
+        :interface => interface,
+        :ip => ip_address,
         :netmask => node['contrail']['compute']['netmask'],
         :gateway => node['contrail']['compute']['gateway'],
         :dns1 => node['contrail']['compute']['dns1'],
@@ -97,6 +109,9 @@ template "/etc/contrail/contrail-vrouter-agent.conf" do
     owner "contrail"
     group "contrail"
     mode 00644
+    variables(
+        :contrail_controller_node_ip => contrail_controller_node_ip
+    )
     notifies :restart, "service[contrail-vrouter-agent]", :immediately
 end
 
