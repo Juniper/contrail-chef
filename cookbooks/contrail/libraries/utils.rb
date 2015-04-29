@@ -14,7 +14,7 @@ module ::Contrail
       else
           result.push(node)
       end
-      return result.sort! { |a, b| a['hostname'] <=> b['hostname'] }
+      return result
   end
 
   def get_database_nodes
@@ -24,7 +24,7 @@ module ::Contrail
           result.push(node)
       end
       result.each { |node| node.default['contrail']['node_number'] = "#{result.rindex(node)+1}" }
-      return result.sort! { |a, b| a['hostname'] <=> b['hostname'] }
+      return result
   end
 
   def get_config_nodes
@@ -33,7 +33,7 @@ module ::Contrail
       if not result.include?(node) and node.run_list.roles.include?('contrail-config')
           result.push(node)
       end
-      return result.sort! { |a, b| a['hostname'] <=> b['hostname'] }
+      return result
   end
 
   def get_compute_nodes
@@ -42,7 +42,7 @@ module ::Contrail
       if not result.include?(node) and node.run_list.roles.include?('compute')
           result.push(node)
       end
-      return result.sort! { |a, b| a['hostname'] <=> b['hostname'] }
+      return result
   end
 
   def search_for(role)

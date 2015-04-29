@@ -23,7 +23,7 @@ default['contrail']['openstack_root_pw'] = "contrail123"
 # Keystone
 default['contrail']['protocol']['keystone'] = "http"
 # Control
-default['contrail']['controller_role'] = "contrail-control"
+default['contrail']['controller_role'] = "contrail-config"
 # Compute
 default['contrail']['compute']['interface'] = "eth1"
 default['contrail']['compute']['hostname'] = "a6s35"

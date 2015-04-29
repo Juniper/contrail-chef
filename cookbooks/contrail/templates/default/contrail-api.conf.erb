@@ -6,7 +6,7 @@
 
 [DEFAULTS]
 ifmap_server_ip = <%=node['ipaddress']%>
-ifmap_server_port = 8445
+ifmap_server_port = 8443
 ifmap_username = api-server
 ifmap_password = api-server
 cassandra_server_list = <%= @servers.collect{|x| x['ipaddress']+':9160'}.join(' ') %>

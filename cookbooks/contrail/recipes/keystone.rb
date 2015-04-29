@@ -5,6 +5,10 @@
 # Copyright 2014, Juniper Networks
 #
 
+class ::Chef::Recipe
+  include ::Contrail
+end
+
 include_recipe "contrail::common"
 
 %w{contrail-openstack}.each do |pkg|
