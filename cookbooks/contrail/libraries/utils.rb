@@ -46,7 +46,7 @@ module ::Contrail
   end
 
   def search_for(role)
-    resp = search(:node, "roles:#{role} AND chef_environment:#{node.chef_environment}")
+    resp = search(:node, "role:#{role} AND chef_environment:#{node.chef_environment}")
     resp ? resp : []
   end
 

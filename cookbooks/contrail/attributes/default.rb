@@ -24,6 +24,8 @@ default['contrail']['openstack_root_pw'] = "contrail123"
 default['contrail']['protocol']['keystone'] = "http"
 # Control
 default['contrail']['controller_role'] = "contrail-config"
+# rabbitmq
+default['contrail']['rabbitmq'] = true
 # Compute
 default['contrail']['compute']['interface'] = "eth1"
 default['contrail']['compute']['hostname'] = "a6s35"

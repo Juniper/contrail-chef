@@ -100,6 +100,8 @@ bash "enable-vrouter" do
         vif --add #{interface} --mac #{macaddr} --vrf 0 --vhost-phys --type physical
         vif --add vhost0 --mac #{macaddr} --vrf 0 --xconnect #{interface} --type vhost
         service network restart
+        ifconfig #{interface} 0
+        service network restart
     EOC
     not_if "grep -e '^vrouter$' /etc/modules"
 end

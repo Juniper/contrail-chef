@@ -24,7 +24,6 @@ end
 %w{ ifmap-server
     contrail-config
     contrail-utils
-    rabbitmq-server
 }.each do |pkg|
     package pkg do
         action :upgrade
@@ -47,15 +46,29 @@ if not platform?("ubuntu") then
     end
 end
 
-template "/etc/rabbitmq/rabbitmq-env.conf" do
-    source "rabbitmq-env.conf.erb"
-    mode 0644
-end
+if node['contrail']['rabbitmq'] then
+    template "/etc/rabbitmq/rabbitmq-env.conf" do
+        source "rabbitmq-env.conf.erb"
+        mode 0644
+    end
 
-template "/etc/rabbitmq/rabbitmq.config" do
-    source "rabbitmq.config.erb"
-    mode 00644
-    notifies :restart, "service[supervisor-support-service]", :delayed
+    template "/etc/rabbitmq/rabbitmq.config" do
+        source "rabbitmq.config.erb"
+        mode 00644
+        notifies :restart, "service[supervisor-support-service]", :delayed
+    end
+
+    %w{ rabbitmq-server }.each do |pkg|
+        package pkg do
+            action :upgrade
+        end
+    end
+
+    %w{ rabbitmq-server }.each do |pkg|
+        service pkg do
+            action [:enable, :start]
+        end
+    end
 end
 
 template "/etc/ifmap-server/ifmap.properties" do
@@ -89,6 +102,7 @@ database_nodes = get_database_nodes
 %w{ contrail-discovery
     contrail-svc-monitor
     contrail-api
+    contrail-device-manager
     contrail-schema
 }.each do |pkg|
     template "/etc/contrail/#{pkg}.conf" do
@@ -102,14 +116,14 @@ database_nodes = get_database_nodes
     end
 end
 
-%w{ rabbitmq-server
-    supervisor-support-service
+%w{ supervisor-support-service
     supervisor-config
     ifmap
     contrail-discovery
     contrail-svc-monitor
     contrail-api
     contrail-schema
+    contrail-device-manager
 }.each do |pkg|
     service pkg do
         action [:enable, :start]
