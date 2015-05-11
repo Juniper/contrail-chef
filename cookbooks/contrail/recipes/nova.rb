@@ -64,6 +64,8 @@ bash "nova-server-setup" do
         echo "OPENSTACK_INDEX=1" >> /etc/contrail/ctrl-details
         echo "COMPUTE=#{node['contrail']['compute']['ip']}" >> /etc/contrail/ctrl-details
         echo "CONTROLLER_MGMT=#{node['ipaddress']}" >> /etc/contrail/ctrl-details
+        echo "OSAPI_COMPUTE_WORKERS=40" >> /etc/contrail/ctrl-details
+        echo "CONDUCTOR_WORKERS=40" >> /etc/contrail/ctrl-details
         /usr/bin/nova-server-setup.sh
     EOC
 end
