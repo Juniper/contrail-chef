@@ -87,7 +87,11 @@ template "/etc/ifmap-server/basicauthusers.properties" do
     #notifies :restart, "service[ifmap]", :immediately
 end
 
-openstack_controller_node_ip = get_openstack_controller_node_ip
+begin
+  openstack_controller_node_ip = get_openstack_controller_node_ip
+rescue
+  openstack_controller_node_ip = node['ipaddress']
+end
 
 template "/etc/contrail/vnc_api_lib.ini" do
     source "contrail-vnc_api_lib.ini.erb"

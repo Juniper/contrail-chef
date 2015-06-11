@@ -31,7 +31,11 @@ template "/etc/neutron/plugin.ini" do
     notifies :restart, "service[neutron-server]", :immediately
 end
 
-openstack_controller_node_ip = get_openstack_controller_node_ip
+begin
+  openstack_controller_node_ip = get_openstack_controller_node_ip
+rescue
+  openstack_controller_node_ip = node['ipaddress']
+end
 
 bash "neutron-server-setup" do
     user  "root"

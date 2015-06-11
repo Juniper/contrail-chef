@@ -20,7 +20,7 @@ disc_server_ip=<%=node['ipaddress']%>
 disc_server_port=5998
 zk_server_ip = <%= @servers.collect{|x| x['ipaddress']+':2181'}.join(',') %>
 redis_server_ip=<%=node['ipaddress']%>
-rabbit_server=127.0.0.1
+rabbit_server=<%=node['ipaddress']%>
 rabbit_port=5672
 auth = keystone
 
