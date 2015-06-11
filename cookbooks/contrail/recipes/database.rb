@@ -28,7 +28,12 @@ end
 
 %w{cassandra-env.sh cassandra-rackdc.properties cassandra.yaml}.each do |file|
     database_nodes = get_database_nodes
-    template "/etc/cassandra/conf/#{file}" do
+    if platform?("ubuntu") then
+      cass_path="/etc/cassandra/"
+    else
+      cass_path="/etc/cassandra/conf/"
+    end
+    template "#{cass_path}#{file}" do
         source "#{file}.erb"
         mode 00644
         variables(:servers => database_nodes)

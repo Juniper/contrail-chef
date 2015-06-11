@@ -5,7 +5,7 @@
 ###########################################
 default['contrail']['openstack_release'] = "icehouse"
 default['contrail']['multi_tenancy'] = false
-default['contrail']['manage_neutron'] = true
+default['contrail']['manage_neutron'] = false
 default['contrail']['manage_nova_compute'] = true
 default['contrail']['router_asn'] = 64512
 default['contrail']['neutron_token'] = "c0ntrail123"
