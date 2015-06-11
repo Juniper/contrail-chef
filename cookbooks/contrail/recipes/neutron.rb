@@ -9,8 +9,7 @@ class ::Chef::Recipe
   include ::Contrail
 end
 
-%w{ openstack-neutron
-    neutron-plugin-contrail
+%w{ neutron-plugin-contrail
     python-simplejson
     python-lxml
 }.each do |pkg|
