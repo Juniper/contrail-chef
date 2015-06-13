@@ -11,6 +11,7 @@
     "recipe[contrail]",
     "recipe[contrail::haproxy]",
     "recipe[contrail::cfgm]",
+    "recipe[contrail::provision]",
     "recipe[contrail::neutron]"
   ],
   "env_run_lists": {

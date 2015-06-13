@@ -9,18 +9,18 @@ ifmap_server_ip = <%=node['ipaddress']%>
 ifmap_server_port = 8443
 ifmap_username = svc-monitor
 ifmap_password = svc-monitor
-api_server_ip = <%=node['ipaddress']%>
+api_server_ip = <%=@cfgm_vip%>
 api_server_port=8082
 zk_server_ip = <%= @servers.collect{|x| x['ipaddress']+':2181'}.join(',') %>
 log_file=/var/log/contrail/contrail-svc-monitor.log
 cassandra_server_list = <%= @servers.collect{|x| x['ipaddress']+':9160'}.join(' ') %>
-disc_server_ip = <%=node['ipaddress']%>
+disc_server_ip = <%=@cfgm_vip%>
 disc_server_port=5998
 region_name=<%=node['contrail']['region_name']%>
 log_local=1
 log_level=SYS_NOTICE
-rabbit_server=<%=node['ipaddress']%>
-rabbit_port=5672
+rabbit_server=<%=@cfgm_vip%>
+rabbit_port=<%=@rabbit_port%>
 
 [SECURITY]
 use_certs=False

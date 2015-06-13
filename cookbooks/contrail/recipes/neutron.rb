@@ -38,7 +38,7 @@ end
 
 bash "neutron-server-setup" do
     user  "root"
-    if node['contrail']['haproxy'] then
+    if node['contrail']['ha'] then
         quantum_port=9697
     else
         quantum_port=9696

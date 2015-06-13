@@ -1,6 +1,6 @@
 [
    {rabbit, [ {tcp_listeners, [{"<%=node['ipaddress']%>", 5672}]}, {cluster_partition_handling, autoheal},{loopback_users, []},
-              {cluster_nodes, {[<%=node['hostname']%>], disc}},
+              {cluster_nodes, {[<%= @servers.collect{|x| x['hostname']}.join(',') %>], disc}},
               {vm_memory_high_watermark, 0.4},
               {disk_free_limit,50000000},
               {log_levels,[{connection, info},{mirroring, info}]},

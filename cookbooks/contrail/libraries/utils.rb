@@ -33,6 +33,7 @@ module ::Contrail
       if not result.include?(node) and node.run_list.roles.include?('contrail-config')
           result.push(node)
       end
+      result.each { |node| node.default['contrail']['priority'] = "#{100-result.rindex(node)}" }
       return result
   end
 
@@ -77,6 +78,20 @@ module ::Contrail
       end
     end
     nil
+  end
+
+  def get_cfgm_virtual_ipaddr
+      if node['contrail']['cfgm']['vip']
+        return node['contrail']['cfgm']['vip']
+      else
+        node['ipaddress']
+      end
+  end
+
+  def get_cfgm_virtual_pfxlen
+      if node['contrail']['cfgm']['pfxlen']
+        return node['contrail']['cfgm']['pfxlen']
+      end
   end
 
 end

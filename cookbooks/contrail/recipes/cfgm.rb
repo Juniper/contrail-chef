@@ -16,6 +16,13 @@ class ::Chef::Recipe
   include ::Contrail
 end
 
+if node['contrail']['ha'] == true then
+  include_recipe "contrail::keepalived" 
+end
+
+config_nodes = get_config_nodes
+cfgm_vip = get_cfgm_virtual_ipaddr
+
 package "contrail-openstack-config" do
     action :upgrade
     notifies :stop, "service[supervisor-config]", :immediately
@@ -54,6 +61,7 @@ if node['contrail']['rabbitmq'] then
 
     template "/etc/rabbitmq/rabbitmq.config" do
         source "rabbitmq.config.erb"
+        variables(:servers => config_nodes)
         mode 00644
         notifies :restart, "service[supervisor-support-service]", :delayed
     end
@@ -78,8 +86,6 @@ template "/etc/ifmap-server/ifmap.properties" do
     notifies :restart, "service[contrail-api]", :immediately
 end
 
-config_nodes = get_config_nodes
-
 template "/etc/ifmap-server/basicauthusers.properties" do
     source "ifmap-basicauthusers.properties.erb"
     mode 00644
@@ -98,10 +104,16 @@ template "/etc/contrail/vnc_api_lib.ini" do
     owner "contrail"
     group "contrail"
     mode 00644
-    variables(:keystone_server_ip => openstack_controller_node_ip)
+    variables(:keystone_server_ip => openstack_controller_node_ip,
+              :cfgm_vip           => cfgm_vip)
 end
 
 database_nodes = get_database_nodes
+if node['contrail']['ha'] == true
+  rabbit_port = 5673
+else
+  rabbit_port = 5672
+end
 
 %w{ contrail-discovery
     contrail-svc-monitor
@@ -115,14 +127,27 @@ database_nodes = get_database_nodes
         group "contrail"
         mode 00640
         variables(:servers            => database_nodes,
+                  :cfgm_vip           => cfgm_vip,
+                  :rabbit_port        => rabbit_port,
                   :keystone_server_ip => openstack_controller_node_ip)
         notifies :restart, "service[#{pkg}]", :immediately
     end
 end
 
+%w{ contrail-config-nodemgr
+}.each do |pkg|
+    template "/etc/contrail/#{pkg}.conf" do
+        source "#{pkg}.conf.erb"
+        owner "contrail"
+        group "contrail"
+        mode 00640
+        variables( :cfgm_vip           => cfgm_vip)
+    end
+end
+
 %w{ supervisor-support-service
-    supervisor-config
     ifmap
+    supervisor-config
     contrail-discovery
     contrail-svc-monitor
     contrail-api
@@ -134,82 +159,3 @@ end
     end
 end
 
-bash "provision_metadata_services" do
-    user "root"
-    admin_user=node['contrail']['admin_user']
-    admin_password=node['contrail']['admin_password']
-    admin_tenant_name=node['contrail']['admin_tenant_name']
-    cfgm_ip=node['ipaddress']
-    code <<-EOH
-        python /opt/contrail/utils/provision_linklocal.py \
-            --admin_user #{admin_user} \
-            --admin_password #{admin_password} \
-            --ipfabric_service_ip #{cfgm_ip} \
-            --ipfabric_service_port 8775 \
-            --api_server_ip #{cfgm_ip} \
-            --linklocal_service_name metadata \
-            --linklocal_service_ip 169.254.169.254 \
-            --linklocal_service_port 80 \
-            --oper add
-    EOH
-end
-
-bash "provision_control" do
-    user "root"
-    admin_user=node['contrail']['admin_user']
-    admin_password=node['contrail']['admin_password']
-    admin_tenant_name=node['contrail']['admin_tenant_name']
-    cfgm_ip=node['ipaddress']
-    ctrl_ip=node['ipaddress']
-    asn=node['contrail']['router_asn']
-    hostname=node['hostname']
-    code <<-EOH
-        python /opt/contrail/utils/provision_control.py \
-            --admin_user #{admin_user} \
-            --admin_password #{admin_password} \
-            --admin_tenant_name #{admin_tenant_name} \
-            --api_server_ip #{cfgm_ip} \
-            --api_server_port 8082 \
-            --router_asn #{asn} \
-            --host_name #{hostname} \
-            --host_ip #{ctrl_ip} \
-            --oper add
-    EOH
-end
-
-bash "provision_encap_type" do
-    user "root"
-    admin_user=node['contrail']['admin_user']
-    admin_password=node['contrail']['admin_password']
-    code <<-EOH
-        python /opt/contrail/utils/provision_encap.py \
-            --admin_user #{admin_user} \
-            --admin_password #{admin_password} \
-            --encap_priority MPLSoUDP,MPLSoGRE,VXLAN \
-            --oper add
-    EOH
-end
-
-get_compute_nodes.each do |server|
-    bash "provision_vrouter" do
-        user "root"
-        admin_user=node['contrail']['admin_user']
-        admin_password=node['contrail']['admin_password']
-        admin_tenant_name=node['contrail']['admin_tenant_name']
-        hostname=server['hostname']
-        hostip=server['ipaddress']
-        cfgm_ip=node['ipaddress']
-        openstack_ip=openstack_controller_node_ip
-        code <<-EOH
-            python /opt/contrail/utils/provision_vrouter.py \
-                --admin_user #{admin_user} \
-                --admin_password #{admin_password} \
-                --admin_tenant_name #{admin_tenant_name} \
-                --host_name #{hostname} \
-                --host_ip #{hostip} \
-                --api_server_ip #{cfgm_ip} \
-                --openstack_ip #{openstack_ip} \
-                --oper add
-        EOH
-    end
-end

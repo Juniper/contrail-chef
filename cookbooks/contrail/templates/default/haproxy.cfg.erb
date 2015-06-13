@@ -39,32 +39,39 @@ backend contrail-api-backend
     option nolinger
     balance     roundrobin
 <% 
-  idx = 9099
   @servers.each do |server|
-    idx = idx + 1
+    idx = 9099
+    for counter in 1..@nworkers do
+       idx = idx + 1
 -%>
     <%= "server #{server['ipaddress']} #{server['ipaddress']}:#{idx} check inter 2000 rise 2 fall 3" %>
-<% end -%>
-    #server  10.84.14.2 10.84.14.2:9100 check
-    #server  10.84.14.2 10.84.14.2:9101 check
+<%
+    end
+-%>
+<%
+  end
+ -%>
 
 backend contrail-discovery-backend
     option nolinger
     balance     roundrobin
 <% 
-  idx = 9109
   @servers.each do |server|
-    idx = idx + 1
+    idx = 9109
+    for counter in 1..@nworkers do
+       idx = idx + 1
 -%>
     <%= "server #{server['ipaddress']} #{server['ipaddress']}:#{idx} check inter 2000 rise 2 fall 3" %>
-<% end -%>
-
-    #server  10.84.14.2 10.84.14.2:9110 check
-    #server  10.84.14.2 10.84.14.2:9111 check
+<%
+    end
+-%>
+<%
+  end
+ -%>
 
 #contrail-config-marker-end
 
-<% if node['contrail']['haproxy'] -%>
+<% if node['contrail']['ha'] -%>
 frontend quantum-server *:9696
     default_backend    quantum-server-backend
 
@@ -72,12 +79,31 @@ backend quantum-server-backend
     option nolinger
     balance     roundrobin
 <% 
-  idx = 9696
   @servers.each do |server|
-    idx = idx + 1
 -%>
-    <%= "server #{server['ipaddress']} #{server['ipaddress']}:#{idx} check inter 2000 rise 2 fall 3" %>
+    <%= "server #{server['ipaddress']} #{server['ipaddress']}:9697 check inter 2000 rise 2 fall 3" %>
+<%
+    end
+-%>
 <% end -%>
 
+<% if node['contrail']['ha'] -%>
+listen  rabbitmq 0.0.0.0:5673
+    mode tcp
+    maxconn 10000
+    balance leastconn
+    option tcpka
+    option nolinger
+    option forceclose
+    timeout client 48h
+    timeout server 48h
+    timeout client-fin 60s
+    timeout server-fin 60s
+<% 
+  @servers.each do |server|
+-%>
+    <%= "server #{server['ipaddress']} #{server['ipaddress']}:5672 check inter 2000 rise 2 fall 3 weight 1 maxconn 500" %>
+<%
+    end
+-%>
 <% end -%>
-

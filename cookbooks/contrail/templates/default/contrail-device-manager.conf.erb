@@ -5,14 +5,14 @@
 ################################################
 
 [DEFAULTS]
-rabbit_server=<%=node['ipaddress']%>
-rabbit_port=5672
-api_server_ip=<%=node['ipaddress']%>
+rabbit_server=<%=@cfgm_vip%>
+rabbit_port=<%=@rabbit_port%>
+api_server_ip=<%=@cfgm_vip%>
 api_server_port=8082
 zk_server_ip = <%= @servers.collect{|x| x['ipaddress']+':2181'}.join(',') %>
 log_file=/var/log/contrail/contrail-device-manager.log
 cassandra_server_list = <%= @servers.collect{|x| x['ipaddress']+':9160'}.join(' ') %>
-disc_server_ip=<%=node['ipaddress']%>
+disc_server_ip=<%=@cfgm_vip%>
 disc_server_port=5998
 log_local=1
 log_level=SYS_NOTICE

@@ -29,6 +29,7 @@ template "/etc/haproxy/haproxy.cfg" do
     mode 00644
     variables(
         :servers => config_nodes,
+        :nworkers => 1,
     )
     notifies :restart, "service[haproxy]", :immediately
 end

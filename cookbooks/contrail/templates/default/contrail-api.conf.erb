@@ -16,12 +16,12 @@ multi_tenancy=<%=node['contrail']['multi_tenancy']%>
 log_file=/var/log/contrail/contrail-api.log
 log_local=1
 log_level=SYS_NOTICE
-disc_server_ip=<%=node['ipaddress']%>
+disc_server_ip=<%=@cfgm_vip%>
 disc_server_port=5998
 zk_server_ip = <%= @servers.collect{|x| x['ipaddress']+':2181'}.join(',') %>
 redis_server_ip=<%=node['ipaddress']%>
-rabbit_server=<%=node['ipaddress']%>
-rabbit_port=5672
+rabbit_server=<%=@cfgm_vip%>
+rabbit_port=<%=@rabbit_port%>
 auth = keystone
 
 [SECURITY]
