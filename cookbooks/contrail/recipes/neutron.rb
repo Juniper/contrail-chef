@@ -22,18 +22,31 @@ service "neutron-server" do
     action [:enable, :start]
 end
 
-template "/etc/neutron/plugin.ini" do
-    source "contrail-neutron-plugin.ini.erb"
-    owner "root"
-    group "root"
-    mode 00644
-    notifies :restart, "service[neutron-server]", :immediately
+if platform?("ubuntu") then
+    template "/etc/default/neutron-server" do
+        source "neutron-server.erb"
+        owner "root"
+        group "root"
+        mode 00644
+    end
 end
 
 begin
   openstack_controller_node_ip = get_openstack_controller_node_ip
 rescue
   openstack_controller_node_ip = node['ipaddress']
+end
+
+cfgm_vip = get_cfgm_virtual_ipaddr
+
+template "/etc/neutron/plugin.ini" do
+    source "contrail-neutron-plugin.ini.erb"
+    owner "root"
+    group "root"
+    mode 00644
+    variables(:keystone_server_ip => openstack_controller_node_ip,
+              :cfgm_vip           => cfgm_vip)
+    notifies :restart, "service[neutron-server]", :immediately
 end
 
 bash "neutron-server-setup" do
@@ -50,7 +63,7 @@ bash "neutron-server-setup" do
         echo "QUANTUM_PROTOCOL=http" >> /etc/contrail/ctrl-details
         echo "ADMIN_TOKEN=#{node['contrail']['admin_token']}" >> /etc/contrail/ctrl-details
         echo "CONTROLLER=#{openstack_controller_node_ip}" >> /etc/contrail/ctrl-details
-        echo "AMQP_SERVER=#{node['ipaddress']}" >> /etc/contrail/ctrl-details
+        echo "AMQP_SERVER=#{cfgm_vip}" >> /etc/contrail/ctrl-details
         echo "QUANTUM=#{node['ipaddress']}" >> /etc/contrail/ctrl-details
         echo "QUANTUM_PORT=#{quantum_port}" >> /etc/contrail/ctrl-details
         echo "COMPUTE=#{node['contrail']['compute']['ip']}" >> /etc/contrail/ctrl-details
