@@ -23,7 +23,6 @@ module ::Contrail
       if not result.include?(node) and node.run_list.roles.include?('contrail-database')
           result.push(node)
       end
-      result.each { |node| node.default['contrail']['node_number'] = "#{result.rindex(node)+1}" }
       return result
   end
 
@@ -92,6 +91,16 @@ module ::Contrail
       if node['contrail']['cfgm']['pfxlen']
         return node['contrail']['cfgm']['pfxlen']
       end
+  end
+
+  def set_node_number
+      result = search(:node, "role:*config* AND chef_environment:#{node.chef_environment}")
+      result.map! { |x| x['hostname'] == node['hostname'] ? node : x }
+      if not result.include?(node) and node.run_list.roles.include?('contrail-config')
+          result.push(node)
+      end
+      result.sort! { |a, b| a['ipaddress'] <=> b['ipaddress'] }
+      result.each { |node| node.default['contrail']['node_number'] = "#{result.rindex(node)+1}" }
   end
 
 end

@@ -13,11 +13,8 @@ package "zookeeper" do
     action :upgrade
 end
 
+set_node_number
 database_nodes = get_database_nodes
-
-execute "remove-zoo-myid-file" do
-    command "rm /etc/zookeeper/conf/myid"
-end
 
 template "/etc/zookeeper/conf/zoo.cfg" do
     source "zoo.cfg.erb"
